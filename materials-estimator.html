@@ -7,132 +7,46 @@
   <style>
     :root{
       --bg:#0b1020; --card:#121a2f; --ink:#e9eefc; --muted:#a9b3ce;
-      --accent:#5aa0ff; --accent-2:#78f0c8; --danger:#ff6b6b; --ring:#2a3557;
-      --radius:16px;
+      --accent:#5aa0ff; --danger:#ff6b6b; --ring:#2a3557; --radius:16px;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; background:linear-gradient(160deg,#0b1020 0%, #0d1326 100%);
-      color:var(--ink); font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-    }
-
-    .wrap{max-width:980px; margin:32px auto; padding:0 16px;}
-    header{
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-      margin-bottom:16px;
-    }
-    .title{
-      display:flex; align-items:center; gap:12px;
-    }
-    .title .logo{
-      width:42px; height:42px; border-radius:12px; background:
-        radial-gradient(120% 120% at 20% 20%, var(--accent) 0%, #476cff 42%, #2a3f7a 72%, #1a2442 100%);
-      box-shadow:0 6px 18px rgba(90,160,255,.35), inset 0 0 0 1px rgba(255,255,255,.08);
-    }
-    h1{font-size:22px; margin:0; letter-spacing:.2px}
-    .subtitle{color:var(--muted); font-size:13px; margin-top:2px}
-
-    .toolbar{
-      display:flex; flex-wrap:wrap; gap:10px;
-    }
-    button{
-      appearance:none; border:0; padding:10px 14px; border-radius:12px;
-      background:#1a2545; color:var(--ink); font-weight:600; cursor:pointer;
-      box-shadow: inset 0 0 0 1px var(--ring);
-      transition:transform .05s ease, box-shadow .2s ease, background .2s ease;
-    }
-    button:hover{box-shadow: inset 0 0 0 1px var(--accent)}
-    button:active{transform:translateY(1px)}
-    .btn-accent{background:linear-gradient(180deg,#2a4ea1 0%, #1c2f6f 100%); box-shadow: inset 0 0 0 1px rgba(122,170,255,.35)}
-    .btn-ghost{background:#121a2f}
-    .btn-danger{background:linear-gradient(180deg,#8c2731,#61141b);}
-
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
-      border-radius:var(--radius); padding:14px; box-shadow:
-        0 10px 28px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.06);
-    }
-
-    .totals{
-      display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 14px;
-    }
-    .chip{
-      display:inline-flex; align-items:center; gap:8px; padding:8px 10px;
-      border-radius:999px; background:#0f1730; box-shadow: inset 0 0 0 1px var(--ring);
-      font-size:13px; color:var(--muted);
-    }
-    .chip b{color:var(--ink); font-variant-numeric:tabular-nums}
-
-    table{width:100%; border-collapse:separate; border-spacing:0 10px}
-    thead th{
-      text-align:left; color:var(--muted); font-weight:600; font-size:12px; padding:0 10px;
-    }
-    tbody tr{background:var(--card); box-shadow:0 4px 16px rgba(0,0,0,.28), inset 0 0 0 1px var(--ring);}
-    tbody td{padding:12px 10px; vertical-align:middle}
-    tbody td:first-child{border-top-left-radius:12px; border-bottom-left-radius:12px}
-    tbody td:last-child{border-top-right-radius:12px; border-bottom-right-radius:12px}
-
-    .idx{width:48px; text-align:center; color:var(--muted)}
-    .name input, .qty input, .unit select, .note input{
-      width:100%; outline:none; border:0; padding:10px 12px; border-radius:10px;
-      background:#0e1733; color:var(--ink); box-shadow: inset 0 0 0 1px var(--ring);
-      font-size:14px;
-    }
-    .qty{width:140px}
-    .unit{width:160px}
-    .note{min-width:180px}
-    .row-actions{width:80px; text-align:right}
-
-    .empty{
-      text-align:center; color:var(--muted); padding:28px 10px;
-      border-radius:12px; border:1px dashed var(--ring); margin-top:10px;
-    }
-
-    @media print{
-      body{background:#fff}
-      .wrap{max-width:100%; margin:0; padding:0}
-      header, .toolbar{display:none}
-      .card{box-shadow:none; background:#fff}
-      tbody tr{box-shadow:none; border:1px solid #ddd}
-      .chip{border:1px solid #ddd; background:#fff; color:#222}
-      .name input, .qty input, .unit select, .note input{
-        box-shadow:none; background:#fff; color:#000; border:1px solid #bbb
-      }
-    }
+    body{margin:0; background:#0b1020; color:var(--ink); font-family:sans-serif;}
+    .wrap{max-width:900px; margin:20px auto; padding:0 16px;}
+    header{display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;}
+    h1{margin:0; font-size:22px}
+    .toolbar{display:flex; gap:10px; flex-wrap:wrap;}
+    button{padding:8px 14px; border:none; border-radius:8px; cursor:pointer;}
+    .btn-accent{background:var(--accent); color:#fff;}
+    .btn-ghost{background:#333; color:#fff;}
+    .btn-danger{background:var(--danger); color:#fff;}
+    .card{background:var(--card); border-radius:12px; padding:12px;}
+    table{width:100%; border-collapse:collapse;}
+    thead th{color:var(--muted); text-align:left; padding:6px;}
+    tbody td{padding:6px;}
+    tbody tr{background:#1a1f33;}
+    input,select{width:100%; padding:6px; border-radius:6px; border:none; background:#0e1733; color:#fff;}
+    .idx{text-align:center; color:var(--muted);}
+    .row-actions{text-align:center;}
+    .empty{color:var(--muted); text-align:center; padding:10px;}
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <div class="title">
-        <div class="logo" aria-hidden="true"></div>
-        <div>
-          <h1>Materials Estimator</h1>
-          <div class="subtitle">Add your electrical materials, set quantities & units, then print/save as PDF.</div>
-        </div>
-      </div>
+      <h1>Materials Estimator</h1>
       <div class="toolbar">
         <button class="btn-accent" id="addRowBtn">＋ Add Item</button>
-        <button class="btn-ghost" id="clearBtn" title="Remove all items">Clear</button>
-        <button class="btn-ghost" id="exportBtn" title="Export JSON file">Export</button>
-        <button class="btn-ghost" id="importBtn" title="Import from JSON">Import</button>
-        <button class="btn-accent" id="printBtn" title="Print or Save as PDF">Download PDF</button>
+        <button class="btn-ghost" id="clearBtn">Clear</button>
+        <button class="btn-accent" id="printBtn">Download PDF</button>
       </div>
     </header>
 
     <div class="card">
-      <div class="totals" id="totalsBar">
-        <!-- totals chips injected here -->
-      </div>
-
-      <table aria-label="Materials table">
+      <table>
         <thead>
           <tr>
             <th class="idx">#</th>
-            <th>Material Type</th>
-            <th>Quantity</th>
+            <th>Material</th>
+            <th>Qty</th>
             <th>Unit</th>
             <th>Notes</th>
             <th class="row-actions">Action</th>
@@ -140,182 +54,66 @@
         </thead>
         <tbody id="tbody"></tbody>
       </table>
-
-      <div class="empty" id="emptyHint">No items yet — click <b>＋ Add Item</b> to begin.</div>
+      <div class="empty" id="emptyHint">No items yet — click Add Item to start.</div>
     </div>
   </div>
 
-  <input type="file" id="filePicker" accept="application/json" hidden />
-
   <script>
-    // ------- State & helpers -------
-    const tbody = document.getElementById('tbody');
-    const emptyHint = document.getElementById('emptyHint');
-    const totalsBar = document.getElementById('totalsBar');
-    const UNITS = ["Nos","Meters","Kg","Feet","Rolls","Boxes","Pairs","Sets"];
-    const LS_KEY = "materials_estimator_v1";
+    const tbody = document.getElementById("tbody");
+    const emptyHint = document.getElementById("emptyHint");
+    const units = ["Nos","Meters","Kg","Feet"];
 
-    function el(tag, attrs={}, children=[]){
-      const n = document.createElement(tag);
-      Object.entries(attrs).forEach(([k,v])=>{
-        if(k==="class") n.className=v;
-        else if(k==="text") n.textContent=v;
-        else n.setAttribute(k,v);
-      });
-      children.forEach(c=> n.appendChild(c));
-      return n;
+    function generateId(){
+      return Date.now().toString(36)+Math.random().toString(36).substr(2,5);
     }
 
-    function rowTemplate(item, idx){
-      const tr = el('tr', {'data-id': item.id});
+    function makeRow(item={}, index=0){
+      const tr = document.createElement("tr");
+      tr.dataset.id = item.id || generateId();
 
-      const tdIdx = el('td', {class:'idx', text: idx+1+''});
-      const tdName = el('td', {class:'name'});
-      const inpName = el('input', {placeholder:'e.g., 2.5 sqmm Copper Cable'});
-      inpName.value = item.name || '';
-      tdName.appendChild(inpName);
+      tr.innerHTML = `
+        <td class="idx">${index+1}</td>
+        <td><input type="text" value="${item.name||""}" placeholder="Material name"></td>
+        <td><input type="number" value="${item.qty||""}" min="0" placeholder="0"></td>
+        <td>
+          <select>
+            ${units.map(u=>`<option ${u===item.unit?"selected":""}>${u}</option>`).join("")}
+          </select>
+        </td>
+        <td><input type="text" value="${item.note||""}" placeholder="Notes"></td>
+        <td class="row-actions"><button class="btn-danger">Remove</button></td>
+      `;
 
-      const tdQty = el('td', {class:'qty'});
-      const inpQty = el('input', {type:'number', step:'any', min:'0', placeholder:'0'});
-      inpQty.value = item.qty ?? '';
-      tdQty.appendChild(inpQty);
-
-      const tdUnit = el('td', {class:'unit'});
-      const sel = el('select');
-      UNITS.forEach(u=>{
-        const opt = el('option', {value:u, text:u});
-        if(u === (item.unit || 'Nos')) opt.selected = true;
-        sel.appendChild(opt);
+      tr.querySelector(".btn-danger").addEventListener("click",()=>{
+        tr.remove();
+        refreshIndex();
       });
-      tdUnit.appendChild(sel);
 
-      const tdNote = el('td', {class:'note'});
-      const inpNote = el('input', {placeholder:'Optional notes (brand, spec, etc.)'});
-      inpNote.value = item.note || '';
-      tdNote.appendChild(inpNote);
-
-      const tdAct = el('td', {class:'row-actions'});
-      const btnDel = el('button', {class:'btn-danger'}); btnDel.textContent = 'Remove';
-      tdAct.appendChild(btnDel);
-
-      // wiring
-      const pushUpdate = () => { saveToLocal(); refreshTotals(); };
-      inpName.addEventListener('input', pushUpdate);
-      inpQty.addEventListener('input', pushUpdate);
-      sel.addEventListener('change', pushUpdate);
-      inpNote.addEventListener('input', pushUpdate);
-      btnDel.addEventListener('click', () => { tr.remove(); reindex(); saveToLocal(); refreshTotals(); });
-
-      [tdIdx,tdName,tdQty,tdUnit,tdNote,tdAct].forEach(td=> tr.appendChild(td));
       return tr;
     }
 
-    function getRows(){
-      return [...tbody.querySelectorAll('tr')].map(tr=>{
-        const [nameEl, qtyEl, unitEl, noteEl] = [
-          tr.querySelector('.name input'),
-          tr.querySelector('.qty input'),
-          tr.querySelector('.unit select'),
-          tr.querySelector('.note input'),
-        ];
-        return {
-          id: tr.dataset.id,
-          name: nameEl.value.trim(),
-          qty: qtyEl.value === '' ? '' : Number(qtyEl.value),
-          unit: unitEl.value,
-          note: noteEl.value.trim(),
-        };
+    function refreshIndex(){
+      [...tbody.children].forEach((tr,i)=>{
+        tr.querySelector(".idx").textContent = i+1;
       });
+      emptyHint.style.display = tbody.children.length ? "none" : "block";
     }
 
-    function saveToLocal(){
-      const data = getRows();
-      localStorage.setItem(LS_KEY, JSON.stringify(data));
-      emptyHint.style.display = data.length ? 'none' : '';
-    }
-
-    function loadFromLocal(){
-      const raw = localStorage.getItem(LS_KEY);
-      if(!raw) return;
-      try{
-        const data = JSON.parse(raw);
-        data.forEach(addRowFromData);
-      }catch(e){ console.warn('Failed to parse saved data'); }
-      refreshTotals();
-    }
-
-    function addRowFromData(d){
-      const tr = rowTemplate({id: crypto.randomUUID(), ...d}, tbody.children.length);
-      tbody.appendChild(tr);
-      emptyHint.style.display = 'none';
-    }
-
-    function addEmptyRow(){
-      addRowFromData({name:'', qty:'', unit:'Nos', note:''});
-      saveToLocal();
-      refreshTotals();
-    }
-
-    function reindex(){
-      [...tbody.children].forEach((tr,i)=> tr.querySelector('.idx').textContent = i+1);
-      emptyHint.style.display = tbody.children.length ? 'none' : '';
-    }
-
-    function refreshTotals(){
-      const rows = getRows().filter(r => r.qty !== '' && !isNaN(r.qty));
-      const totals = rows.reduce((acc,r)=>{
-        acc[r.unit] = (acc[r.unit] || 0) + Number(r.qty);
-        return acc;
-      }, {});
-      totalsBar.innerHTML = '';
-      Object.entries(totals).sort((a,b)=> a[0].localeCompare(b[0])).forEach(([unit,sum])=>{
-        const chip = el('div', {class:'chip'});
-        chip.innerHTML = `<span>${unit}</span><b>${sum.toLocaleString()}</b>`;
-        totalsBar.appendChild(chip);
-      });
-    }
-
-    // ------- Buttons -------
-    document.getElementById('addRowBtn').addEventListener('click', addEmptyRow);
-    document.getElementById('clearBtn').addEventListener('click', () => {
-      if(confirm('Clear all items?')){ tbody.innerHTML=''; saveToLocal(); refreshTotals(); reindex(); }
-    });
-    document.getElementById('printBtn').addEventListener('click', () => window.print());
-
-    document.getElementById('exportBtn').addEventListener('click', () => {
-      const blob = new Blob([JSON.stringify(getRows(), null, 2)], {type:'application/json'});
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `materials-${new Date().toISOString().slice(0,10)}.json`;
-      a.click();
-      URL.revokeObjectURL(a.href);
+    document.getElementById("addRowBtn").addEventListener("click",()=>{
+      tbody.appendChild(makeRow({}, tbody.children.length));
+      refreshIndex();
     });
 
-    const picker = document.getElementById('filePicker');
-    document.getElementById('importBtn').addEventListener('click', () => picker.click());
-    picker.addEventListener('change', async (e) => {
-      const file = e.target.files[0];
-      if(!file) return;
-      try{
-        const text = await file.text();
-        const data = JSON.parse(text);
-        if(!Array.isArray(data)) throw new Error('Invalid JSON format');
-        tbody.innerHTML = '';
-        data.forEach(addRowFromData);
-        reindex(); saveToLocal(); refreshTotals();
-      }catch(err){
-        alert('Import failed: ' + err.message);
-      }finally{
-        picker.value = '';
-      }
+    document.getElementById("clearBtn").addEventListener("click",()=>{
+      tbody.innerHTML="";
+      refreshIndex();
     });
 
-    // ------- Init -------
-    window.addEventListener('DOMContentLoaded', () => {
-      loadFromLocal();
-      if(tbody.children.length === 0) addEmptyRow();
-      reindex();
-    });
+    document.getElementById("printBtn").addEventListener("click",()=>window.print());
+
+    // start with one row
+    tbody.appendChild(makeRow({},0));
+    refreshIndex();
   </script>
 </body>
 </html>
