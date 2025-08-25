@@ -7,8 +7,8 @@
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f7f9fc;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f4f6fa;
       color: #222;
     }
     .container {
@@ -16,71 +16,79 @@
       margin: 30px auto;
       padding: 20px;
       background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.1);
     }
     h1 {
       text-align: center;
       margin-bottom: 20px;
       color: #2c3e50;
+      font-size: 28px;
     }
     .details {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 15px;
       margin-bottom: 25px;
     }
     .details label {
-      font-size: 14px;
+      font-size: 13px;
       display: block;
       margin-bottom: 5px;
-      font-weight: bold;
+      font-weight: 600;
+      color: #555;
     }
     .details input {
       width: 100%;
       padding: 7px;
       border: 1px solid #ccc;
-      border-radius: 4px;
+      border-radius: 6px;
     }
     .toolbar {
       display: flex;
       justify-content: center;
-      gap: 10px;
+      gap: 12px;
       margin-bottom: 15px;
     }
     button {
-      padding: 8px 14px;
+      padding: 8px 16px;
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      font-weight: bold;
+      font-weight: 600;
+      transition: 0.2s;
     }
     .btn-add { background: #3498db; color: #fff; }
+    .btn-add:hover { background: #2980b9; }
     .btn-clear { background: #e67e22; color: #fff; }
+    .btn-clear:hover { background: #ca6f1e; }
     .btn-print { background: #2ecc71; color: #fff; }
-    .btn-remove { background: #e74c3c; color: #fff; padding: 4px 10px; }
+    .btn-print:hover { background: #27ae60; }
+    .btn-remove { background: #e74c3c; color: #fff; padding: 4px 12px; }
+    .btn-remove:hover { background: #c0392b; }
     table {
       width: 100%;
       border-collapse: collapse;
-      background: #fff;
+      margin-top: 10px;
       border-radius: 8px;
       overflow: hidden;
-      margin-top: 10px;
     }
     th, td {
       border: 1px solid #ddd;
-      padding: 8px;
+      padding: 10px;
       text-align: center;
+      font-size: 14px;
     }
     th {
-      background: #3498db;
+      background: #34495e;
       color: #fff;
+      font-size: 15px;
     }
     select, input {
       width: 95%;
       padding: 6px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
+      border-radius: 5px;
+      border: 1px solid #bbb;
     }
     .empty-msg {
       text-align: center;
@@ -88,18 +96,42 @@
       margin-top: 15px;
     }
     .reference {
-      margin-top: 25px;
-      padding: 15px;
-      background: #ecf0f1;
-      border-radius: 8px;
+      margin-top: 30px;
+      padding: 18px;
+      background: #f1f3f6;
+      border-radius: 10px;
     }
     .reference h3 {
       margin-top: 0;
       color: #2c3e50;
+      font-size: 20px;
     }
-    .reference ul {
-      columns: 2;
+    .ref-flex {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .ref-box {
+      flex: 1;
+      min-width: 200px;
+    }
+    .ref-box h4 {
+      margin-bottom: 8px;
+      color: #34495e;
+      font-size: 16px;
+      border-bottom: 2px solid #ccc;
+      display: inline-block;
+      padding-bottom: 3px;
+    }
+    .ref-box ul {
+      margin: 0;
       padding-left: 20px;
+      list-style: square;
+    }
+    .ref-box li {
+      font-size: 14px;
+      margin-bottom: 4px;
     }
   </style>
 </head>
@@ -107,7 +139,7 @@
   <div class="container">
     <h1>Material Estimator</h1>
 
-    <!-- Customer/Electrician details form -->
+    <!-- Customer/Electrician details -->
     <div class="details">
       <div>
         <label>Customer Name</label>
@@ -142,7 +174,7 @@
         <tr>
           <th>#</th>
           <th>Material</th>
-          <th>Rating/Specification</th>
+          <th>Rating / Specification</th>
           <th>Quantity</th>
           <th>Unit</th>
           <th>Notes</th>
@@ -151,25 +183,53 @@
       </thead>
       <tbody id="table-body"></tbody>
     </table>
-    <div class="empty-msg" id="empty-msg">No items yet — click "Add Item" to start.</div>
+    <div class="empty-msg" id="empty-msg">No items added yet.</div>
 
-    <!-- Reference List -->
+    <!-- Reference Section -->
     <div class="reference">
-      <h3>📋 Common Electrical Materials & Units</h3>
-      <ul>
-        <li>1.5, 2.5, 4 sqmm Wire – Meters / Roll</li>
-        <li>Switch (1 Way/2 Way) – Nos</li>
-        <li>Socket (5A/15A) – Nos</li>
-        <li>MCB, DB Box, Main Switch – Nos</li>
-        <li>Ceiling Fan (60W/75W/100W) – Nos</li>
-        <li>LED Bulb (9W/12W/15W) – Nos</li>
-        <li>Tube Light (20W/40W) – Nos</li>
-        <li>Inverter, Battery – Set</li>
-        <li>Solar Panel (250W/350W) – Nos</li>
-        <li>Earthing Wire – Meters</li>
-        <li>Conduit Pipe – Length (Feet/Meters)</li>
-        <li>Junction Box – Nos</li>
-      </ul>
+      <h3>Reference Guide</h3>
+      <div class="ref-flex">
+        <div class="ref-box">
+          <h4>Materials</h4>
+          <ul>
+            <li>Wire</li>
+            <li>Ceiling Fan</li>
+            <li>LED Bulb</li>
+            <li>Tube Light</li>
+            <li>Switch (1 Way/2 Way)</li>
+            <li>Socket (5A/15A)</li>
+            <li>MCB / DB Box</li>
+            <li>Main Switch</li>
+            <li>Inverter / Battery</li>
+            <li>Solar Panel</li>
+          </ul>
+        </div>
+        <div class="ref-box">
+          <h4>Ratings</h4>
+          <ul>
+            <li>Wire – 1.5 / 2.5 / 4 / 6 Sqmm</li>
+            <li>Fan – 60W / 75W / 100W</li>
+            <li>LED Bulb – 9W / 12W / 15W</li>
+            <li>Tube Light – 20W / 40W</li>
+            <li>MCB – 6A / 10A / 16A / 32A</li>
+            <li>Battery – 150Ah / 200Ah</li>
+            <li>Solar Panel – 250W / 350W / 500W</li>
+          </ul>
+        </div>
+        <div class="ref-box">
+          <h4>Units</h4>
+          <ul>
+            <li>Nos</li>
+            <li>Meter</li>
+            <li>Roll</li>
+            <li>Coil</li>
+            <li>Feet</li>
+            <li>Kg</li>
+            <li>Set</li>
+            <li>Length</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -177,31 +237,23 @@
     const tbody = document.getElementById("table-body");
     const emptyMsg = document.getElementById("empty-msg");
 
-    // Materials with possible rating options
+    // Materials with rating options
     const materials = {
-      "Wire": ["1.5 Sqmm FRLS", "2.5 Sqmm FRLS", "4 Sqmm FRLS", "6 Sqmm FRLS"],
+      "Wire": ["1.5 Sqmm", "2.5 Sqmm", "4 Sqmm", "6 Sqmm"],
       "Ceiling Fan": ["60W", "75W", "100W"],
       "LED Bulb": ["9W", "12W", "15W"],
-      "Tube Light": ["20W LED", "40W LED"],
+      "Tube Light": ["20W", "40W"],
       "Switch (1 Way)": ["6A"],
       "Switch (2 Way)": ["6A"],
       "Socket": ["5A", "15A"],
       "MCB": ["6A", "10A", "16A", "32A"],
       "MCB DB Box": ["4 Way", "8 Way", "12 Way"],
       "Main Switch": ["32A DP", "63A DP"],
-      "Distribution Board": ["Single Phase", "Three Phase"],
       "Inverter": ["850VA", "1500VA"],
       "Battery": ["150Ah", "200Ah"],
-      "Solar Panel": ["250W", "350W", "500W"],
-      "Stabilizer": ["1 kVA", "2 kVA"],
-      "Conduit Pipe": ["20mm", "25mm", "32mm"],
-      "Junction Box": ["2 Way", "4 Way"],
-      "Earthing Wire": ["6 Sqmm", "10 Sqmm"],
-      "Earthing Rod": ["Copper 2m", "GI 3m"],
-      "Distribution Transformer": ["25kVA", "63kVA", "100kVA"]
+      "Solar Panel": ["250W", "350W", "500W"]
     };
 
-    // Common units
     const units = ["Nos", "Meter", "Roll", "Coil", "Feet", "Kg", "Set", "Length"];
 
     function addRow() {
@@ -223,7 +275,7 @@
           </select>
         </td>
         <td>
-          <select><option value="">--Select Rating--</option></select>
+          <select><option value="">--Select--</option></select>
         </td>
         <td><input type="number" placeholder="0"></td>
         <td><select>${unitOptions}</select></td>
@@ -237,7 +289,7 @@
     function updateRating(selectElement) {
       const selected = selectElement.value;
       const ratingDropdown = selectElement.parentElement.nextElementSibling.firstElementChild;
-      ratingDropdown.innerHTML = "<option value=''>--Select Rating--</option>";
+      ratingDropdown.innerHTML = "<option value=''>--Select--</option>";
       if (materials[selected]) {
         materials[selected].forEach(r => {
           ratingDropdown.innerHTML += `<option>${r}</option>`;
@@ -262,7 +314,6 @@
       emptyMsg.style.display = tbody.children.length ? "none" : "block";
     }
 
-    // Start with one row
     addRow();
   </script>
 </body>
