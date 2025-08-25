@@ -8,41 +8,39 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #0b1020;
-      color: #fff;
+      background: #f7f9fc;
+      color: #222;
     }
     .container {
-      max-width: 950px;
+      max-width: 1000px;
       margin: 30px auto;
       padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
     h1 {
       text-align: center;
       margin-bottom: 20px;
-      color: #f1c40f;
+      color: #2c3e50;
     }
     .details {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 15px;
       margin-bottom: 25px;
-      background: #121a2f;
-      padding: 15px;
-      border-radius: 8px;
     }
     .details label {
       font-size: 14px;
       display: block;
       margin-bottom: 5px;
-      color: #ddd;
+      font-weight: bold;
     }
     .details input {
       width: 100%;
       padding: 7px;
-      border: none;
+      border: 1px solid #ccc;
       border-radius: 4px;
-      background: #0e1733;
-      color: #fff;
     }
     .toolbar {
       display: flex;
@@ -64,29 +62,29 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      background: #121a2f;
+      background: #fff;
       border-radius: 8px;
       overflow: hidden;
+      margin-top: 10px;
     }
     th, td {
-      border: 1px solid #2a3557;
+      border: 1px solid #ddd;
       padding: 8px;
       text-align: center;
     }
     th {
-      background: #1f2a44;
+      background: #3498db;
+      color: #fff;
     }
-    input, select {
+    select, input {
       width: 95%;
       padding: 6px;
       border-radius: 4px;
-      border: none;
-      background: #0e1733;
-      color: #fff;
+      border: 1px solid #ccc;
     }
     .empty-msg {
       text-align: center;
-      color: #aaa;
+      color: #777;
       margin-top: 15px;
     }
   </style>
@@ -130,6 +128,7 @@
         <tr>
           <th>#</th>
           <th>Material</th>
+          <th>Rating/Specification</th>
           <th>Quantity</th>
           <th>Unit</th>
           <th>Notes</th>
@@ -145,55 +144,71 @@
     const tbody = document.getElementById("table-body");
     const emptyMsg = document.getElementById("empty-msg");
 
-    // Units
-    const units = ["Nos", "Meters", "Kg", "Feet", "Roll"];
+    // List of materials with their ratings/specifications
+    const materials = {
+      "1.5 Sqmm Wire": "FRLS, 1100V",
+      "2.5 Sqmm Wire": "FRLS, 1100V",
+      "4 Sqmm Wire": "FRLS, 1100V",
+      "Ceiling Fan": "60W, 230V",
+      "Table Fan": "40W, 230V",
+      "LED Bulb": "9W, B22, 230V",
+      "Tube Light": "20W LED, 230V",
+      "Switch (1 Way)": "6A, 230V",
+      "Switch (2 Way)": "6A, 230V",
+      "Socket (5A)": "5A, 230V",
+      "Socket (15A)": "15A, 230V",
+      "MCB": "6A – 32A, SP",
+      "MCB DB Box": "4 Way / 8 Way",
+      "Main Switch": "32A DP, 230V",
+      "Distribution Board": "Single Phase, 230V",
+      "3 Pin Plug": "6A, 230V",
+      "Extension Board": "16A, 230V",
+      "Stabilizer": "1 kVA, 230V",
+      "Inverter": "850VA, 12V",
+      "Battery": "150Ah, 12V",
+      "Solar Panel": "250W, 24V",
+      "Conduit Pipe": "20mm, PVC",
+      "Junction Box": "PVC, 4 Way",
+      "Earthing Rod": "Copper, 2m",
+      "Earthing Wire": "6 Sqmm Green",
+      "Distribution Transformer": "25kVA, 11kV/433V"
+    };
 
-    // Electrical material list
-    const materials = [
-      "Switch (1-way)",
-      "Switch (2-way)",
-      "Socket (5A)",
-      "Socket (15A)",
-      "Fan Regulator",
-      "MCB (Single Pole)",
-      "MCB (Double Pole)",
-      "Distribution Box",
-      "Ceiling Fan",
-      "Tube Light",
-      "LED Bulb",
-      "PVC Conduit Pipe",
-      "Flexible Wire",
-      "Service Wire",
-      "Junction Box",
-      "Modular Board",
-      "Modular Plate",
-      "Bulb Holder",
-      "Cable Gland",
-      "Earthing Kit"
-    ];
+    const units = ["Nos", "Meters", "Kg", "Feet"];
 
     function addRow() {
       const row = document.createElement("tr");
       const index = tbody.children.length + 1;
 
+      // create material dropdown
+      const materialOptions = Object.keys(materials)
+        .map(m => `<option value="${m}">${m}</option>`)
+        .join("");
+
+      const unitOptions = units.map(u => `<option>${u}</option>`).join("");
+
       row.innerHTML = `
         <td>${index}</td>
         <td>
-          <select>
-            ${materials.map(m => `<option>${m}</option>`).join("")}
+          <select onchange="updateRating(this)">
+            <option value="">--Select--</option>
+            ${materialOptions}
           </select>
         </td>
+        <td><input type="text" placeholder="Rating" readonly></td>
         <td><input type="number" placeholder="0"></td>
-        <td>
-          <select>
-            ${units.map(u => `<option>${u}</option>`).join("")}
-          </select>
-        </td>
+        <td><select>${unitOptions}</select></td>
         <td><input type="text" placeholder="Notes"></td>
         <td><button class="btn-remove" onclick="removeRow(this)">Remove</button></td>
       `;
       tbody.appendChild(row);
       refresh();
+    }
+
+    function updateRating(selectElement) {
+      const selected = selectElement.value;
+      const ratingInput = selectElement.parentElement.nextElementSibling.firstElementChild;
+      ratingInput.value = materials[selected] || "";
     }
 
     function removeRow(btn) {
