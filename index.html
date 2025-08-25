@@ -12,7 +12,7 @@
       color: #222;
     }
     .container {
-      max-width: 1000px;
+      max-width: 1050px;
       margin: 30px auto;
       padding: 20px;
       background: #fff;
@@ -87,6 +87,20 @@
       color: #777;
       margin-top: 15px;
     }
+    .reference {
+      margin-top: 25px;
+      padding: 15px;
+      background: #ecf0f1;
+      border-radius: 8px;
+    }
+    .reference h3 {
+      margin-top: 0;
+      color: #2c3e50;
+    }
+    .reference ul {
+      columns: 2;
+      padding-left: 20px;
+    }
   </style>
 </head>
 <body>
@@ -138,49 +152,62 @@
       <tbody id="table-body"></tbody>
     </table>
     <div class="empty-msg" id="empty-msg">No items yet — click "Add Item" to start.</div>
+
+    <!-- Reference List -->
+    <div class="reference">
+      <h3>📋 Common Electrical Materials & Units</h3>
+      <ul>
+        <li>1.5, 2.5, 4 sqmm Wire – Meters / Roll</li>
+        <li>Switch (1 Way/2 Way) – Nos</li>
+        <li>Socket (5A/15A) – Nos</li>
+        <li>MCB, DB Box, Main Switch – Nos</li>
+        <li>Ceiling Fan (60W/75W/100W) – Nos</li>
+        <li>LED Bulb (9W/12W/15W) – Nos</li>
+        <li>Tube Light (20W/40W) – Nos</li>
+        <li>Inverter, Battery – Set</li>
+        <li>Solar Panel (250W/350W) – Nos</li>
+        <li>Earthing Wire – Meters</li>
+        <li>Conduit Pipe – Length (Feet/Meters)</li>
+        <li>Junction Box – Nos</li>
+      </ul>
+    </div>
   </div>
 
   <script>
     const tbody = document.getElementById("table-body");
     const emptyMsg = document.getElementById("empty-msg");
 
-    // List of materials with their ratings/specifications
+    // Materials with possible rating options
     const materials = {
-      "1.5 Sqmm Wire": "FRLS, 1100V",
-      "2.5 Sqmm Wire": "FRLS, 1100V",
-      "4 Sqmm Wire": "FRLS, 1100V",
-      "Ceiling Fan": "60W, 230V",
-      "Table Fan": "40W, 230V",
-      "LED Bulb": "9W, B22, 230V",
-      "Tube Light": "20W LED, 230V",
-      "Switch (1 Way)": "6A, 230V",
-      "Switch (2 Way)": "6A, 230V",
-      "Socket (5A)": "5A, 230V",
-      "Socket (15A)": "15A, 230V",
-      "MCB": "6A – 32A, SP",
-      "MCB DB Box": "4 Way / 8 Way",
-      "Main Switch": "32A DP, 230V",
-      "Distribution Board": "Single Phase, 230V",
-      "3 Pin Plug": "6A, 230V",
-      "Extension Board": "16A, 230V",
-      "Stabilizer": "1 kVA, 230V",
-      "Inverter": "850VA, 12V",
-      "Battery": "150Ah, 12V",
-      "Solar Panel": "250W, 24V",
-      "Conduit Pipe": "20mm, PVC",
-      "Junction Box": "PVC, 4 Way",
-      "Earthing Rod": "Copper, 2m",
-      "Earthing Wire": "6 Sqmm Green",
-      "Distribution Transformer": "25kVA, 11kV/433V"
+      "Wire": ["1.5 Sqmm FRLS", "2.5 Sqmm FRLS", "4 Sqmm FRLS", "6 Sqmm FRLS"],
+      "Ceiling Fan": ["60W", "75W", "100W"],
+      "LED Bulb": ["9W", "12W", "15W"],
+      "Tube Light": ["20W LED", "40W LED"],
+      "Switch (1 Way)": ["6A"],
+      "Switch (2 Way)": ["6A"],
+      "Socket": ["5A", "15A"],
+      "MCB": ["6A", "10A", "16A", "32A"],
+      "MCB DB Box": ["4 Way", "8 Way", "12 Way"],
+      "Main Switch": ["32A DP", "63A DP"],
+      "Distribution Board": ["Single Phase", "Three Phase"],
+      "Inverter": ["850VA", "1500VA"],
+      "Battery": ["150Ah", "200Ah"],
+      "Solar Panel": ["250W", "350W", "500W"],
+      "Stabilizer": ["1 kVA", "2 kVA"],
+      "Conduit Pipe": ["20mm", "25mm", "32mm"],
+      "Junction Box": ["2 Way", "4 Way"],
+      "Earthing Wire": ["6 Sqmm", "10 Sqmm"],
+      "Earthing Rod": ["Copper 2m", "GI 3m"],
+      "Distribution Transformer": ["25kVA", "63kVA", "100kVA"]
     };
 
-    const units = ["Nos", "Meters", "Kg", "Feet"];
+    // Common units
+    const units = ["Nos", "Meter", "Roll", "Coil", "Feet", "Kg", "Set", "Length"];
 
     function addRow() {
       const row = document.createElement("tr");
       const index = tbody.children.length + 1;
 
-      // create material dropdown
       const materialOptions = Object.keys(materials)
         .map(m => `<option value="${m}">${m}</option>`)
         .join("");
@@ -195,7 +222,9 @@
             ${materialOptions}
           </select>
         </td>
-        <td><input type="text" placeholder="Rating" readonly></td>
+        <td>
+          <select><option value="">--Select Rating--</option></select>
+        </td>
         <td><input type="number" placeholder="0"></td>
         <td><select>${unitOptions}</select></td>
         <td><input type="text" placeholder="Notes"></td>
@@ -207,8 +236,13 @@
 
     function updateRating(selectElement) {
       const selected = selectElement.value;
-      const ratingInput = selectElement.parentElement.nextElementSibling.firstElementChild;
-      ratingInput.value = materials[selected] || "";
+      const ratingDropdown = selectElement.parentElement.nextElementSibling.firstElementChild;
+      ratingDropdown.innerHTML = "<option value=''>--Select Rating--</option>";
+      if (materials[selected]) {
+        materials[selected].forEach(r => {
+          ratingDropdown.innerHTML += `<option>${r}</option>`;
+        });
+      }
     }
 
     function removeRow(btn) {
@@ -228,7 +262,7 @@
       emptyMsg.style.display = tbody.children.length ? "none" : "block";
     }
 
-    // start with one row
+    // Start with one row
     addRow();
   </script>
 </body>
