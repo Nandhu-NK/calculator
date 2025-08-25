@@ -144,14 +144,45 @@
   <script>
     const tbody = document.getElementById("table-body");
     const emptyMsg = document.getElementById("empty-msg");
-    const units = ["Nos", "Meters", "Kg", "Feet"];
+
+    // Units
+    const units = ["Nos", "Meters", "Kg", "Feet", "Roll"];
+
+    // Electrical material list
+    const materials = [
+      "Switch (1-way)",
+      "Switch (2-way)",
+      "Socket (5A)",
+      "Socket (15A)",
+      "Fan Regulator",
+      "MCB (Single Pole)",
+      "MCB (Double Pole)",
+      "Distribution Box",
+      "Ceiling Fan",
+      "Tube Light",
+      "LED Bulb",
+      "PVC Conduit Pipe",
+      "Flexible Wire",
+      "Service Wire",
+      "Junction Box",
+      "Modular Board",
+      "Modular Plate",
+      "Bulb Holder",
+      "Cable Gland",
+      "Earthing Kit"
+    ];
 
     function addRow() {
       const row = document.createElement("tr");
       const index = tbody.children.length + 1;
+
       row.innerHTML = `
         <td>${index}</td>
-        <td><input type="text" placeholder="Material name"></td>
+        <td>
+          <select>
+            ${materials.map(m => `<option>${m}</option>`).join("")}
+          </select>
+        </td>
         <td><input type="number" placeholder="0"></td>
         <td>
           <select>
