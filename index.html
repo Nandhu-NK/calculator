@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Materials Estimator</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1020;
+      color: #fff;
+    }
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .toolbar {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    button {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .btn-add { background: #3498db; color: #fff; }
+    .btn-clear { background: #e67e22; color: #fff; }
+    .btn-print { background: #2ecc71; color: #fff; }
+    .btn-remove { background: #e74c3c; color: #fff; padding: 4px 10px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #121a2f;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      border: 1px solid #2a3557;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background: #1f2a44;
+    }
+    input, select {
+      width: 95%;
+      padding: 6px;
+      border-radius: 4px;
+      border: none;
+      background: #0e1733;
+      color: #fff;
+    }
+    .empty-msg {
+      text-align: center;
+      color: #aaa;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Materials Estimator</h1>
+    <div class="toolbar">
+      <button class="btn-add" onclick="addRow()">+ Add Item</button>
+      <button class="btn-clear" onclick="clearAll()">Clear</button>
+      <button class="btn-print" onclick="window.print()">Download PDF</button>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Material</th>
+          <th>Quantity</th>
+          <th>Unit</th>
+          <th>Notes</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+    <div class="empty-msg" id="empty-msg">No items yet — click "Add Item" to start.</div>
+  </div>
+
+  <script>
+    const tbody = document.getElementById("table-body");
+    const emptyMsg = document.getElementById("empty-msg");
+    const units = ["Nos", "Meters", "Kg", "Feet"];
+
+    function addRow() {
+      const row = document.createElement("tr");
+      const index = tbody.children.length + 1;
+      row.innerHTML = `
+        <td>${index}</td>
+        <td><input type="text" placeholder="Material name"></td>
+        <td><input type="number" placeholder="0"></td>
+        <td>
+          <select>
+            ${units.map(u => `<option>${u}</option>`).join("")}
+          </select>
+        </td>
+        <td><input type="text" placeholder="Notes"></td>
+        <td><button class="btn-remove" onclick="removeRow(this)">Remove</button></td>
+      `;
+      tbody.appendChild(row);
+      refresh();
+    }
+
+    function removeRow(btn) {
+      btn.parentElement.parentElement.remove();
+      refresh();
+    }
+
+    function clearAll() {
+      tbody.innerHTML = "";
+      refresh();
+    }
+
+    function refresh() {
+      [...tbody.children].forEach((tr, i) => {
+        tr.children[0].textContent = i + 1;
+      });
+      emptyMsg.style.display = tbody.children.length ? "none" : "block";
+    }
+
+    // start with one row
+    addRow();
+  </script>
+</body>
+</html>
