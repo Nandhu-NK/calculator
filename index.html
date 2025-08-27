@@ -86,7 +86,6 @@
         <tr>
           <th>Material</th>
           <th>Rating</th>
-          <th>Unit</th>
           <th>Quantity</th>
           <th>Rate</th>
           <th>Total</th>
@@ -109,7 +108,6 @@
     ];
 
     const ratings = ["-", "6A", "10A", "16A", "32A", "63A", "1.5 sqmm", "2.5 sqmm", "4 sqmm", "230V", "415V"];
-    const units = ["Nos", "Meter", "Roll", "Box", "Set"];
 
     function addRow() {
       const table = document.getElementById("materialTable").getElementsByTagName('tbody')[0];
@@ -135,18 +133,8 @@
       });
       ratingCell.appendChild(ratingSelect);
 
-      // Unit
-      let unitCell = row.insertCell(2);
-      let unitSelect = document.createElement("select");
-      units.forEach(u => {
-        let option = document.createElement("option");
-        option.text = u;
-        unitSelect.add(option);
-      });
-      unitCell.appendChild(unitSelect);
-
       // Quantity
-      let qtyCell = row.insertCell(3);
+      let qtyCell = row.insertCell(2);
       let qtyInput = document.createElement("input");
       qtyInput.type = "number";
       qtyInput.value = 1;
@@ -154,7 +142,7 @@
       qtyCell.appendChild(qtyInput);
 
       // Rate
-      let rateCell = row.insertCell(4);
+      let rateCell = row.insertCell(3);
       let rateInput = document.createElement("input");
       rateInput.type = "number";
       rateInput.value = 0;
@@ -162,11 +150,11 @@
       rateCell.appendChild(rateInput);
 
       // Total
-      let totalCell = row.insertCell(5);
+      let totalCell = row.insertCell(4);
       totalCell.textContent = "0";
 
       // Action
-      let actionCell = row.insertCell(6);
+      let actionCell = row.insertCell(5);
       let delBtn = document.createElement("button");
       delBtn.textContent = "❌";
       delBtn.className = "btn";
@@ -175,10 +163,10 @@
     }
 
     function updateRow(row) {
-      let qty = row.cells[3].querySelector("input").value || 0;
-      let rate = row.cells[4].querySelector("input").value || 0;
+      let qty = row.cells[2].querySelector("input").value || 0;
+      let rate = row.cells[3].querySelector("input").value || 0;
       let total = qty * rate;
-      row.cells[5].textContent = "₹" + total;
+      row.cells[4].textContent = "₹" + total;
       updateGrandTotal();
     }
 
@@ -186,7 +174,7 @@
       const table = document.getElementById("materialTable").getElementsByTagName('tbody')[0];
       let grandTotal = 0;
       for (let row of table.rows) {
-        let total = row.cells[5].textContent.replace("₹", "") || 0;
+        let total = row.cells[4].textContent.replace("₹", "") || 0;
         grandTotal += parseFloat(total);
       }
       document.getElementById("grandTotal").textContent = "Grand Total: ₹" + grandTotal;
