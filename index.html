@@ -7,177 +7,213 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 20px;
-      background: #f7f9fc;
+      background: #f4f6f9;
+      margin: 0;
+      padding: 0;
     }
-    h1 {
-      text-align: center;
-      color: #2c3e50;
-    }
-    .details, .estimator {
+
+    .container {
+      max-width: 1000px;
+      margin: 30px auto;
       background: #fff;
       padding: 20px;
       border-radius: 12px;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
       margin-bottom: 20px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    label {
-      display: inline-block;
-      width: 150px;
-      margin-bottom: 10px;
+
+    .details {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .details label {
       font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
     }
-    input, select {
-      padding: 5px;
-      width: 200px;
-      margin-bottom: 10px;
+
+    .details input {
+      width: 95%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 15px;
+      margin-bottom: 20px;
     }
+
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+
     th, td {
-      border: 1px solid #ccc;
-      padding: 10px;
       text-align: center;
+      padding: 10px;
     }
+
     th {
-      background: #2c3e50;
+      background: #007bff;
       color: #fff;
     }
+
+    tr:hover {
+      background: #f9f9f9;
+    }
+
     .btn {
-      background: #2c3e50;
-      color: white;
-      padding: 8px 15px;
+      padding: 10px 15px;
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      margin-top: 10px;
+      margin-right: 5px;
     }
-    .btn:hover {
-      background: #1a252f;
+
+    .btn-add {
+      background: #28a745;
+      color: #fff;
     }
-    .grand-total {
-      text-align: right;
-      font-size: 18px;
+
+    .btn-remove {
+      background: #dc3545;
+      color: #fff;
+    }
+
+    .btn-print {
+      background: #007bff;
+      color: #fff;
+      float: right;
+    }
+
+    tfoot td {
       font-weight: bold;
-      margin-top: 15px;
+      background: #f1f1f1;
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <h1>Material Estimator</h1>
 
-  <h1>Material Estimator</h1>
+    <div class="details">
+      <div>
+        <label>Customer Name</label>
+        <input type="text" id="customerName">
+      </div>
+      <div>
+        <label>Mobile No</label>
+        <input type="text" id="mobileNo">
+      </div>
+      <div>
+        <label>Location</label>
+        <input type="text" id="location">
+      </div>
+      <div>
+        <label>Electrician Name</label>
+        <input type="text" id="electricianName">
+      </div>
+      <div>
+        <label>Date</label>
+        <input type="text" id="date" readonly>
+      </div>
+    </div>
 
-  <!-- Customer Details -->
-  <div class="details">
-    <label>Customer Name:</label><input type="text"><br>
-    <label>Mobile No:</label><input type="text"><br>
-    <label>Location:</label><input type="text"><br>
-    <label>Electrician Name:</label><input type="text"><br>
-    <label>Date:</label><input type="date"><br>
-  </div>
-
-  <!-- Estimator Section -->
-  <div class="estimator">
-    <table id="materialTable">
+    <table id="materialsTable">
       <thead>
         <tr>
           <th>Material</th>
           <th>Rating</th>
           <th>Quantity</th>
-          <th>Rate</th>
-          <th>Total</th>
+          <th>Rate (₹)</th>
+          <th>Total (₹)</th>
           <th>Action</th>
         </tr>
       </thead>
       <tbody></tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4">Grand Total</td>
+          <td id="grandTotal">0</td>
+          <td></td>
+        </tr>
+      </tfoot>
     </table>
-    <button class="btn" onclick="addRow()">+ Add Material</button>
-    <div class="grand-total" id="grandTotal">Grand Total: ₹0</div>
-    <button class="btn" onclick="window.print()">Print / Save PDF</button>
+
+    <button class="btn btn-add" onclick="addRow()">+ Add Material</button>
+    <button class="btn btn-print" onclick="window.print()">🖨️ Print / Save PDF</button>
   </div>
 
   <script>
-    const materials = [
-      "Ceiling Fan", "Exhaust Fan", "LED Bulb", "Tube Light", "Switch 6A", 
-      "Socket 6A", "MCB 6A", "MCB 16A", "Distribution Box", "1.5 sqmm Wire", 
-      "2.5 sqmm Wire", "4 sqmm Wire", "PVC Pipe", "3-Pin Plug", "Main Switch", 
-      "Earth Wire", "Junction Box", "Panel Board", "Solar Inverter", "Batteries"
-    ];
-
-    const ratings = ["-", "6A", "10A", "16A", "32A", "63A", "1.5 sqmm", "2.5 sqmm", "4 sqmm", "230V", "415V"];
+    document.getElementById("date").value = new Date().toLocaleDateString();
 
     function addRow() {
-      const table = document.getElementById("materialTable").getElementsByTagName('tbody')[0];
-      const row = table.insertRow();
+      const tableBody = document.querySelector("#materialsTable tbody");
+      const row = document.createElement("tr");
 
-      // Material
-      let materialCell = row.insertCell(0);
-      let materialSelect = document.createElement("select");
-      materials.forEach(m => {
-        let option = document.createElement("option");
-        option.text = m;
-        materialSelect.add(option);
-      });
-      materialCell.appendChild(materialSelect);
+      row.innerHTML = `
+        <td>
+          <select>
+            <option value="">--Select--</option>
+            <option>Ceiling Fan</option>
+            <option>LED Bulb</option>
+            <option>Tubelights</option>
+            <option>Switch</option>
+            <option>Socket</option>
+            <option>Wires (1.5 sq.mm)</option>
+            <option>Wires (2.5 sq.mm)</option>
+            <option>MCB</option>
+            <option>Distribution Box</option>
+            <option>3-Phase Motor</option>
+            <option>Conduit Pipe</option>
+          </select>
+        </td>
+        <td>
+          <select>
+            <option value="">--Select--</option>
+            <option>5A</option>
+            <option>15A</option>
+            <option>230V</option>
+            <option>440V</option>
+            <option>0.5 HP</option>
+            <option>1 HP</option>
+            <option>2 HP</option>
+            <option>5 HP</option>
+          </select>
+        </td>
+        <td><input type="number" value="1" min="1" oninput="updateTotals()"></td>
+        <td><input type="number" value="0" min="0" oninput="updateTotals()"></td>
+        <td class="total">0</td>
+        <td><button class="btn btn-remove" onclick="removeRow(this)">X</button></td>
+      `;
 
-      // Rating
-      let ratingCell = row.insertCell(1);
-      let ratingSelect = document.createElement("select");
-      ratings.forEach(r => {
-        let option = document.createElement("option");
-        option.text = r;
-        ratingSelect.add(option);
-      });
-      ratingCell.appendChild(ratingSelect);
-
-      // Quantity
-      let qtyCell = row.insertCell(2);
-      let qtyInput = document.createElement("input");
-      qtyInput.type = "number";
-      qtyInput.value = 1;
-      qtyInput.oninput = () => updateRow(row);
-      qtyCell.appendChild(qtyInput);
-
-      // Rate
-      let rateCell = row.insertCell(3);
-      let rateInput = document.createElement("input");
-      rateInput.type = "number";
-      rateInput.value = 0;
-      rateInput.oninput = () => updateRow(row);
-      rateCell.appendChild(rateInput);
-
-      // Total
-      let totalCell = row.insertCell(4);
-      totalCell.textContent = "0";
-
-      // Action
-      let actionCell = row.insertCell(5);
-      let delBtn = document.createElement("button");
-      delBtn.textContent = "❌";
-      delBtn.className = "btn";
-      delBtn.onclick = () => { row.remove(); updateGrandTotal(); };
-      actionCell.appendChild(delBtn);
+      tableBody.appendChild(row);
     }
 
-    function updateRow(row) {
-      let qty = row.cells[2].querySelector("input").value || 0;
-      let rate = row.cells[3].querySelector("input").value || 0;
-      let total = qty * rate;
-      row.cells[4].textContent = "₹" + total;
-      updateGrandTotal();
+    function removeRow(button) {
+      button.parentElement.parentElement.remove();
+      updateTotals();
     }
 
-    function updateGrandTotal() {
-      const table = document.getElementById("materialTable").getElementsByTagName('tbody')[0];
+    function updateTotals() {
       let grandTotal = 0;
-      for (let row of table.rows) {
-        let total = row.cells[4].textContent.replace("₹", "") || 0;
-        grandTotal += parseFloat(total);
-      }
-      document.getElementById("grandTotal").textContent = "Grand Total: ₹" + grandTotal;
+      document.querySelectorAll("#materialsTable tbody tr").forEach(row => {
+        const qty = row.querySelector('td:nth-child(3) input').value;
+        const rate = row.querySelector('td:nth-child(4) input').value;
+        const total = qty * rate;
+        row.querySelector(".total").textContent = total;
+        grandTotal += total;
+      });
+      document.getElementById("grandTotal").textContent = grandTotal;
     }
   </script>
 </body>
