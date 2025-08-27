@@ -2,249 +2,194 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Material Estimator</title>
   <style>
     body {
       font-family: Arial, sans-serif;
+      margin: 20px;
       background: #f7f9fc;
-      margin: 0;
-      padding: 0;
-      color: #333;
     }
-
-    header {
-      background: #004080;
-      color: white;
+    h1 {
       text-align: center;
-      padding: 15px;
-      font-size: 24px;
-      font-weight: bold;
+      color: #2c3e50;
     }
-
-    .container {
-      width: 85%;
-      margin: 20px auto;
-      background: white;
+    .details, .estimator {
+      background: #fff;
       padding: 20px;
       border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-
-    h2 {
-      color: #004080;
-      border-bottom: 2px solid #004080;
-      padding-bottom: 5px;
-    }
-
     label {
-      display: block;
-      margin-top: 10px;
+      display: inline-block;
+      width: 150px;
+      margin-bottom: 10px;
       font-weight: bold;
     }
-
     input, select {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+      padding: 5px;
+      width: 200px;
+      margin-bottom: 10px;
     }
-
-    button {
-      margin-top: 15px;
-      padding: 10px 15px;
-      background: #004080;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #0059b3;
-    }
-
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
+      margin-top: 15px;
     }
-
-    table, th, td {
-      border: 1px solid #ccc;
-    }
-
     th, td {
-      padding: 8px;
+      border: 1px solid #ccc;
+      padding: 10px;
       text-align: center;
     }
-
-    tfoot td {
-      font-weight: bold;
-      background: #f0f0f0;
+    th {
+      background: #2c3e50;
+      color: #fff;
     }
-
-    .summary {
-      margin-top: 20px;
-      padding: 10px;
-      background: #f0f8ff;
-      border-left: 5px solid #004080;
+    .btn {
+      background: #2c3e50;
+      color: white;
+      padding: 8px 15px;
+      border: none;
       border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .btn:hover {
+      background: #1a252f;
+    }
+    .grand-total {
+      text-align: right;
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 15px;
     }
   </style>
 </head>
 <body>
-  <header>Material Estimator</header>
-  <div class="container">
-    <h2>Customer & Project Details</h2>
-    <label>Customer Name</label>
-    <input type="text" id="custName">
-    <label>Customer Mobile No</label>
-    <input type="text" id="custMobile">
-    <label>Location</label>
-    <input type="text" id="custLocation">
-    <label>Electrician Name</label>
-    <input type="text" id="elecName">
-    <label>Date</label>
-    <input type="date" id="date">
 
-    <h2>Work Category</h2>
-    <label>Select Work Type</label>
-    <select id="workCategory" onchange="loadSuggestedItems()">
-      <option value="">-- Select --</option>
-      <option value="house">House Wiring</option>
-      <option value="industrial">Industrial Wiring</option>
-      <option value="street">Street Lighting</option>
-      <option value="solar">Solar Installation</option>
-    </select>
+  <h1>Material Estimator</h1>
 
-    <h2>Materials Estimation</h2>
-    <label>Material</label>
-    <select id="material">
-      <option value="Wire">Wire</option>
-      <option value="Switch">Switch</option>
-      <option value="MCB">MCB</option>
-      <option value="DB Box">DB Box</option>
-      <option value="LED Light">LED Light</option>
-      <option value="Fan">Fan</option>
-      <option value="Conduit Pipe">Conduit Pipe</option>
-      <option value="Solar Panel">Solar Panel</option>
-    </select>
+  <!-- Customer Details -->
+  <div class="details">
+    <label>Customer Name:</label><input type="text"><br>
+    <label>Mobile No:</label><input type="text"><br>
+    <label>Location:</label><input type="text"><br>
+    <label>Electrician Name:</label><input type="text"><br>
+    <label>Date:</label><input type="date"><br>
+  </div>
 
-    <label>Rating</label>
-    <select id="rating">
-      <option value="1 sq.mm">1 sq.mm</option>
-      <option value="1.5 sq.mm">1.5 sq.mm</option>
-      <option value="6A">6A</option>
-      <option value="16A">16A</option>
-      <option value="32A">32A</option>
-      <option value="63A">63A</option>
-      <option value="230V">230V</option>
-      <option value="440V">440V</option>
-      <option value="250W">250W</option>
-      <option value="500W">500W</option>
-    </select>
-
-    <label>Unit</label>
-    <select id="unit">
-      <option value="Nos">Nos</option>
-      <option value="Meters">Meters</option>
-      <option value="Rolls">Rolls</option>
-      <option value="Sq.mm">Sq.mm</option>
-      <option value="Set">Set</option>
-    </select>
-
-    <label>Quantity</label>
-    <input type="number" id="qty" min="1">
-
-    <button onclick="addItem()">Add Item</button>
-
-    <table id="materialsTable">
+  <!-- Estimator Section -->
+  <div class="estimator">
+    <table id="materialTable">
       <thead>
         <tr>
           <th>Material</th>
           <th>Rating</th>
           <th>Unit</th>
           <th>Quantity</th>
-          <th>Category</th>
+          <th>Rate</th>
+          <th>Total</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody></tbody>
     </table>
-
-    <div class="summary" id="summaryBox">
-      <h3>Category Summary</h3>
-      <p id="wireCost">Wires: 0 items</p>
-      <p id="switchCost">Switches: 0 items</p>
-      <p id="protectionCost">Protection Devices (MCB/DB): 0 items</p>
-      <p id="lightingCost">Lighting Fixtures: 0 items</p>
-      <p id="othersCost">Others: 0 items</p>
-    </div>
-
-    <button onclick="window.print()">Download as PDF</button>
+    <button class="btn" onclick="addRow()">+ Add Material</button>
+    <div class="grand-total" id="grandTotal">Grand Total: ₹0</div>
+    <button class="btn" onclick="window.print()">Print / Save PDF</button>
   </div>
 
   <script>
-    function addItem() {
-      let mat = document.getElementById("material").value;
-      let rate = document.getElementById("rating").value;
-      let unit = document.getElementById("unit").value;
-      let qty = document.getElementById("qty").value;
+    const materials = [
+      "Ceiling Fan", "Exhaust Fan", "LED Bulb", "Tube Light", "Switch 6A", 
+      "Socket 6A", "MCB 6A", "MCB 16A", "Distribution Box", "1.5 sqmm Wire", 
+      "2.5 sqmm Wire", "4 sqmm Wire", "PVC Pipe", "3-Pin Plug", "Main Switch", 
+      "Earth Wire", "Junction Box", "Panel Board", "Solar Inverter", "Batteries"
+    ];
 
-      if (!qty) {
-        alert("Enter quantity!");
-        return;
-      }
+    const ratings = ["-", "6A", "10A", "16A", "32A", "63A", "1.5 sqmm", "2.5 sqmm", "4 sqmm", "230V", "415V"];
+    const units = ["Nos", "Meter", "Roll", "Box", "Set"];
 
-      let category = getCategory(mat);
+    function addRow() {
+      const table = document.getElementById("materialTable").getElementsByTagName('tbody')[0];
+      const row = table.insertRow();
 
-      let table = document.getElementById("materialsTable").getElementsByTagName('tbody')[0];
-      let newRow = table.insertRow();
-      newRow.insertCell(0).innerText = mat;
-      newRow.insertCell(1).innerText = rate;
-      newRow.insertCell(2).innerText = unit;
-      newRow.insertCell(3).innerText = qty;
-      newRow.insertCell(4).innerText = category;
-
-      updateSummary();
-    }
-
-    function getCategory(material) {
-      if (material.includes("Wire") || material.includes("Conduit")) return "Wires";
-      if (material.includes("Switch")) return "Switches";
-      if (material.includes("MCB") || material.includes("DB")) return "Protection";
-      if (material.includes("LED") || material.includes("Fan")) return "Lighting";
-      return "Others";
-    }
-
-    function updateSummary() {
-      let rows = document.querySelectorAll("#materialsTable tbody tr");
-      let summary = { Wires: 0, Switches: 0, Protection: 0, Lighting: 0, Others: 0 };
-
-      rows.forEach(row => {
-        let cat = row.cells[4].innerText;
-        summary[cat]++;
+      // Material
+      let materialCell = row.insertCell(0);
+      let materialSelect = document.createElement("select");
+      materials.forEach(m => {
+        let option = document.createElement("option");
+        option.text = m;
+        materialSelect.add(option);
       });
+      materialCell.appendChild(materialSelect);
 
-      document.getElementById("wireCost").innerText = "Wires: " + summary.Wires + " items";
-      document.getElementById("switchCost").innerText = "Switches: " + summary.Switches + " items";
-      document.getElementById("protectionCost").innerText = "Protection Devices (MCB/DB): " + summary.Protection + " items";
-      document.getElementById("lightingCost").innerText = "Lighting Fixtures: " + summary.Lighting + " items";
-      document.getElementById("othersCost").innerText = "Others: " + summary.Others + " items";
+      // Rating
+      let ratingCell = row.insertCell(1);
+      let ratingSelect = document.createElement("select");
+      ratings.forEach(r => {
+        let option = document.createElement("option");
+        option.text = r;
+        ratingSelect.add(option);
+      });
+      ratingCell.appendChild(ratingSelect);
+
+      // Unit
+      let unitCell = row.insertCell(2);
+      let unitSelect = document.createElement("select");
+      units.forEach(u => {
+        let option = document.createElement("option");
+        option.text = u;
+        unitSelect.add(option);
+      });
+      unitCell.appendChild(unitSelect);
+
+      // Quantity
+      let qtyCell = row.insertCell(3);
+      let qtyInput = document.createElement("input");
+      qtyInput.type = "number";
+      qtyInput.value = 1;
+      qtyInput.oninput = () => updateRow(row);
+      qtyCell.appendChild(qtyInput);
+
+      // Rate
+      let rateCell = row.insertCell(4);
+      let rateInput = document.createElement("input");
+      rateInput.type = "number";
+      rateInput.value = 0;
+      rateInput.oninput = () => updateRow(row);
+      rateCell.appendChild(rateInput);
+
+      // Total
+      let totalCell = row.insertCell(5);
+      totalCell.textContent = "0";
+
+      // Action
+      let actionCell = row.insertCell(6);
+      let delBtn = document.createElement("button");
+      delBtn.textContent = "❌";
+      delBtn.className = "btn";
+      delBtn.onclick = () => { row.remove(); updateGrandTotal(); };
+      actionCell.appendChild(delBtn);
     }
 
-    function loadSuggestedItems() {
-      let category = document.getElementById("workCategory").value;
-      let suggestions = {
-        house: ["Wire", "Switch", "Fan", "LED Light", "MCB"],
-        industrial: ["Wire", "MCB", "DB Box", "Conduit Pipe"],
-        street: ["LED Light", "Conduit Pipe", "Switch"],
-        solar: ["Solar Panel", "MCB", "DB Box"]
-      };
+    function updateRow(row) {
+      let qty = row.cells[3].querySelector("input").value || 0;
+      let rate = row.cells[4].querySelector("input").value || 0;
+      let total = qty * rate;
+      row.cells[5].textContent = "₹" + total;
+      updateGrandTotal();
+    }
 
-      if (suggestions[category]) {
-        alert("Suggested items for " + category + ": " + suggestions[category].join(", "));
+    function updateGrandTotal() {
+      const table = document.getElementById("materialTable").getElementsByTagName('tbody')[0];
+      let grandTotal = 0;
+      for (let row of table.rows) {
+        let total = row.cells[5].textContent.replace("₹", "") || 0;
+        grandTotal += parseFloat(total);
       }
+      document.getElementById("grandTotal").textContent = "Grand Total: ₹" + grandTotal;
     }
   </script>
 </body>
