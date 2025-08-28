@@ -14,13 +14,28 @@
       color: #333;
     }
 
-    h1 {
+    /* ====== HEADER ====== */
+    .header {
+      background: linear-gradient(135deg, #007bff, #00c6ff);
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
       text-align: center;
       margin-bottom: 20px;
-      color: #222;
-      font-size: 28px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
+    .header h1 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: 1px;
+    }
+    .header small {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    /* ====== CARDS ====== */
     .card {
       background: #fff;
       padding: 20px;
@@ -118,23 +133,20 @@
     }
     .btn-remove:hover { background: #c82333; }
 
-    .btn-print {
+    .btn-download {
       background: #007bff;
       color: #fff;
       float: right;
     }
-    .btn-print:hover { background: #0056b3; }
-
-    /* ====== PRINT STYLING ====== */
-    @media print {
-      body { background: #fff; }
-      .btn, .card:last-child { display: none; }
-      .card { box-shadow: none; border: 1px solid #ccc; }
-    }
+    .btn-download:hover { background: #0056b3; }
   </style>
 </head>
 <body>
-  <h1>Material Estimator</h1>
+  <!-- ====== HEADER ====== -->
+  <div class="header">
+    <h1>⚡ Material Estimator</h1>
+    <small>Smart way to calculate electrical material costs</small>
+  </div>
 
   <!-- ====== CUSTOMER DETAILS ====== -->
   <div class="card">
@@ -163,7 +175,7 @@
   </div>
 
   <!-- ====== MATERIAL ESTIMATOR ====== -->
-  <div class="card">
+  <div class="card" id="estimateContent">
     <table id="materialsTable">
       <thead>
         <tr>
@@ -185,14 +197,14 @@
       </tfoot>
     </table>
     <button class="btn btn-add" onclick="addRow()">+ Add Material</button>
-    <button class="btn btn-print" onclick="window.print()">🖨️ Print / Save PDF</button>
+    <button class="btn btn-download" onclick="downloadPDF()">⬇ Save as PDF</button>
   </div>
 
+  <!-- ====== JS ====== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
-    // Auto date
     document.getElementById("date").value = new Date().toLocaleDateString();
 
-    // Add new row
     function addRow() {
       const tableBody = document.querySelector("#materialsTable tbody");
       const row = document.createElement("tr");
@@ -236,13 +248,11 @@
       tableBody.appendChild(row);
     }
 
-    // Remove row
     function removeRow(button) {
       button.parentElement.parentElement.remove();
       updateTotals();
     }
 
-    // Update totals
     function updateTotals() {
       let grandTotal = 0;
       document.querySelectorAll("#materialsTable tbody tr").forEach(row => {
@@ -253,6 +263,48 @@
         grandTotal += total;
       });
       document.getElementById("grandTotal").textContent = grandTotal;
+    }
+
+    // Download as PDF
+    async function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      // Get content
+      let customer = `
+Customer: ${document.getElementById("customerName").value}
+Mobile: ${document.getElementById("mobileNo").value}
+Location: ${document.getElementById("location").value}
+Electrician: ${document.getElementById("electricianName").value}
+Date: ${document.getElementById("date").value}
+`;
+
+      doc.setFontSize(14);
+      doc.text("⚡ Material Estimate", 14, 20);
+      doc.setFontSize(11);
+      doc.text(customer, 14, 35);
+
+      // Add table
+      let y = 60;
+      doc.setFontSize(12);
+      doc.text("Materials:", 14, y);
+
+      document.querySelectorAll("#materialsTable tbody tr").forEach(row => {
+        y += 10;
+        let material = row.querySelector("td:nth-child(1) select").value;
+        let rating = row.querySelector("td:nth-child(2) select").value;
+        let qty = row.querySelector("td:nth-child(3) input").value;
+        let rate = row.querySelector("td:nth-child(4) input").value;
+        let total = row.querySelector("td:nth-child(5)").textContent;
+
+        doc.text(`${material} (${rating}) | Qty: ${qty} | Rate: ₹${rate} | Total: ₹${total}`, 14, y);
+      });
+
+      y += 15;
+      doc.setFontSize(13);
+      doc.text(`Grand Total: ₹${document.getElementById("grandTotal").textContent}`, 14, y);
+
+      doc.save("Material_Estimate.pdf");
     }
   </script>
 </body>
