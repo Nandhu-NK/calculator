@@ -2,310 +2,217 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Material Estimator</title>
+  <title>⚡ Material Estimator</title>
   <style>
-    /* ====== GLOBAL STYLING ====== */
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #eef2f7;
+      font-family: "Segoe UI", sans-serif;
+      background: #f3f6fa;
       margin: 0;
-      padding: 20px;
-      color: #333;
+      padding: 0;
     }
-
-    /* ====== HEADER ====== */
-    .header {
-      background: linear-gradient(135deg, #007bff, #00c6ff);
+    header {
+      background: linear-gradient(135deg, #0052D4, #4364F7, #6FB1FC);
       color: white;
-      padding: 20px;
-      border-radius: 12px;
       text-align: center;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      padding: 25px 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
-
-    .header h1 {
+    header h1 {
       margin: 0;
-      font-size: 28px;
+      font-size: 2rem;
       letter-spacing: 1px;
     }
-    .header small {
-      font-size: 14px;
+    header p {
+      margin-top: 10px;
+      font-size: 1rem;
       opacity: 0.9;
     }
-
-    /* ====== CARDS ====== */
-    .card {
+    .container {
+      max-width: 1100px;
+      margin: 20px auto;
       background: #fff;
       padding: 20px;
-      border-radius: 14px;
-      box-shadow: 0px 4px 15px rgba(0,0,0,0.08);
-      margin-bottom: 20px;
+      border-radius: 12px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
     }
-
-    .details {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px;
+    h2 {
+      color: #333;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 8px;
     }
-
-    .details label {
-      font-weight: 600;
-      margin-bottom: 5px;
-      display: block;
-    }
-
     .details input {
-      width: 100%;
+      margin: 8px;
       padding: 10px;
-      border-radius: 8px;
+      border-radius: 6px;
       border: 1px solid #ccc;
-      transition: 0.3s;
+      width: 220px;
     }
-
-    .details input:focus {
-      border-color: #007bff;
-      outline: none;
-      box-shadow: 0px 0px 5px rgba(0,123,255,0.4);
-    }
-
-    /* ====== TABLE ====== */
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 15px;
+      margin-top: 15px;
     }
-
-    thead th {
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+    table th {
+      background: #0052D4;
+      color: white;
       position: sticky;
       top: 0;
-      background: #007bff;
-      color: #fff;
-      text-transform: uppercase;
-      font-size: 14px;
     }
-
-    th, td {
-      padding: 12px;
-      text-align: center;
-      border-bottom: 1px solid #ddd;
-    }
-
-    tbody tr:hover {
-      background: #f9f9f9;
-    }
-
-    input[type="number"], select {
-      width: 90%;
-      padding: 6px;
-      border-radius: 6px;
+    input, select {
+      padding: 8px;
+      border-radius: 5px;
       border: 1px solid #ccc;
     }
-
-    /* ====== FOOTER ====== */
-    tfoot td {
-      font-weight: bold;
-      background: #f1f3f6;
-      font-size: 16px;
-    }
-
-    /* ====== BUTTONS ====== */
     .btn {
-      padding: 10px 16px;
+      padding: 10px 15px;
+      margin: 8px 4px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 14px;
-      margin: 5px 3px;
+      font-size: 0.9rem;
       transition: 0.3s;
     }
-
-    .btn-add {
-      background: #28a745;
-      color: #fff;
-    }
+    .btn-add { background: #28a745; color: white; }
     .btn-add:hover { background: #218838; }
-
-    .btn-remove {
-      background: #dc3545;
-      color: #fff;
-    }
+    .btn-remove { background: #dc3545; color: white; }
     .btn-remove:hover { background: #c82333; }
-
-    .btn-download {
-      background: #007bff;
-      color: #fff;
-      float: right;
-    }
+    .btn-download { background: #007bff; color: white; }
     .btn-download:hover { background: #0056b3; }
+    .grand-total {
+      font-size: 1.2rem;
+      text-align: right;
+      margin-top: 20px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
-  <!-- ====== HEADER ====== -->
-  <div class="header">
+  <header>
     <h1>⚡ Material Estimator</h1>
-    <small>Smart way to calculate electrical material costs</small>
-  </div>
+    <p>Smart way to calculate electrical materials and project cost</p>
+  </header>
 
-  <!-- ====== CUSTOMER DETAILS ====== -->
-  <div class="card">
+  <div class="container">
+    <h2>Customer & Project Details</h2>
     <div class="details">
-      <div>
-        <label>Customer Name</label>
-        <input type="text" id="customerName">
-      </div>
-      <div>
-        <label>Mobile No</label>
-        <input type="text" id="mobileNo">
-      </div>
-      <div>
-        <label>Location</label>
-        <input type="text" id="location">
-      </div>
-      <div>
-        <label>Electrician Name</label>
-        <input type="text" id="electricianName">
-      </div>
-      <div>
-        <label>Date</label>
-        <input type="text" id="date" readonly>
-      </div>
+      <input type="text" placeholder="Customer Name">
+      <input type="text" placeholder="Mobile Number">
+      <input type="text" placeholder="Location">
+      <input type="text" placeholder="Electrician Name">
+      <input type="date">
     </div>
-  </div>
 
-  <!-- ====== MATERIAL ESTIMATOR ====== -->
-  <div class="card" id="estimateContent">
+    <h2>Materials List</h2>
     <table id="materialsTable">
       <thead>
         <tr>
           <th>Material</th>
           <th>Rating</th>
-          <th>Qty</th>
+          <th>Quantity</th>
           <th>Rate (₹)</th>
           <th>Total (₹)</th>
           <th>Action</th>
         </tr>
       </thead>
-      <tbody></tbody>
-      <tfoot>
-        <tr>
-          <td colspan="4">Grand Total</td>
-          <td id="grandTotal">0</td>
-          <td></td>
-        </tr>
-      </tfoot>
+      <tbody id="tableBody">
+      </tbody>
     </table>
     <button class="btn btn-add" onclick="addRow()">+ Add Material</button>
     <button class="btn btn-download" onclick="downloadPDF()">⬇ Save as PDF</button>
+
+    <div class="grand-total" id="grandTotal">Grand Total: ₹0</div>
   </div>
 
-  <!-- ====== JS ====== -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
   <script>
-    document.getElementById("date").value = new Date().toLocaleDateString();
+    const materialOptions = [
+      "1.5 sqmm Wire (Red)", "1.5 sqmm Wire (Black)", "1.5 sqmm Wire (Green)",
+      "2.5 sqmm Wire", "4 sqmm Wire", "6 sqmm Wire", "10 sqmm Wire",
+      "16 sqmm Wire", "25 sqmm Wire", "32A MCB", "63A MCB", "100A MCB",
+      "Single Pole MCB", "Double Pole MCB", "Four Pole MCB",
+      "Distribution Box 4 Way", "Distribution Box 8 Way",
+      "Main Switch 32A", "Main Switch 63A", "Main Switch 100A",
+      "Socket 6A", "Socket 16A", "Switch 6A", "Switch 16A",
+      "Regulator", "Fan 48 Inch", "Fan 56 Inch", "LED Bulb 9W", "LED Bulb 12W",
+      "Tube Light 20W", "Tube Light 40W", "CFL Lamp 18W", "Flood Light 50W",
+      "Flood Light 100W", "Ceiling Rose", "PVC Pipe 20mm", "PVC Pipe 25mm",
+      "PVC Elbow", "PVC Junction Box", "PVC Saddle",
+      "GI Wire 8SWG", "Earthing Plate", "Earthing Rod", "MCB Enclosure",
+      "DB Box Double Door", "Changeover Switch 32A", "Changeover Switch 63A",
+      "Changeover Switch 100A", "Starter 1HP", "Starter 2HP", "Starter 5HP",
+      "Starter 10HP", "Capacitor 2.5 MFD", "Capacitor 4 MFD", "Capacitor 6 MFD",
+      "Capacitor 10 MFD", "Capacitor 25 MFD", "Conduit Clamp",
+      "Service Wire 2 Core", "Service Wire 4 Core", "3 Pin Plug 6A",
+      "3 Pin Plug 16A", "DP Switch 20A", "Isolator 40A", "Isolator 63A",
+      "Timer Switch", "Energy Meter Single Phase", "Energy Meter Three Phase",
+      "Busbar", "Panel Board", "Contactor 9A", "Contactor 12A", "Contactor 25A",
+      "Relay 12V", "Relay 24V", "Relay 230V", "Bell", "Buzzer"
+    ];
+
+    const ratingOptions = [
+      "1A", "2A", "6A", "10A", "16A", "20A", "25A", "32A", "40A", "63A", "100A",
+      "230V", "440V", "0.5 HP", "1 HP", "2 HP", "3 HP", "5 HP", "10 HP",
+      "9W", "12W", "18W", "20W", "40W", "50W", "100W"
+    ];
 
     function addRow() {
-      const tableBody = document.querySelector("#materialsTable tbody");
+      const tableBody = document.getElementById("tableBody");
       const row = document.createElement("tr");
 
       row.innerHTML = `
         <td>
           <select>
-            <option value="">--Select--</option>
-            <option>Ceiling Fan</option>
-            <option>LED Bulb</option>
-            <option>Tubelights</option>
-            <option>Switch</option>
-            <option>Socket</option>
-            <option>Wires (1.5 sq.mm)</option>
-            <option>Wires (2.5 sq.mm)</option>
-            <option>MCB</option>
-            <option>Distribution Box</option>
-            <option>3-Phase Motor</option>
-            <option>Conduit Pipe</option>
+            ${materialOptions.map(m => `<option value="${m}">${m}</option>`).join("")}
           </select>
         </td>
         <td>
           <select>
-            <option value="">--Select--</option>
-            <option>5A</option>
-            <option>15A</option>
-            <option>230V</option>
-            <option>440V</option>
-            <option>0.5 HP</option>
-            <option>1 HP</option>
-            <option>2 HP</option>
-            <option>5 HP</option>
+            ${ratingOptions.map(r => `<option value="${r}">${r}</option>`).join("")}
           </select>
         </td>
-        <td><input type="number" value="1" min="1" oninput="updateTotals()"></td>
-        <td><input type="number" value="0" min="0" oninput="updateTotals()"></td>
+        <td><input type="number" min="1" value="1" onchange="updateTotal(this)"></td>
+        <td><input type="number" min="0" value="0" onchange="updateTotal(this)"></td>
         <td class="total">0</td>
         <td><button class="btn btn-remove" onclick="removeRow(this)">X</button></td>
       `;
-
       tableBody.appendChild(row);
     }
 
-    function removeRow(button) {
-      button.parentElement.parentElement.remove();
-      updateTotals();
+    function removeRow(btn) {
+      btn.closest("tr").remove();
+      updateGrandTotal();
     }
 
-    function updateTotals() {
-      let grandTotal = 0;
-      document.querySelectorAll("#materialsTable tbody tr").forEach(row => {
-        const qty = row.querySelector('td:nth-child(3) input').value;
-        const rate = row.querySelector('td:nth-child(4) input').value;
-        const total = qty * rate;
-        row.querySelector(".total").textContent = total;
-        grandTotal += total;
-      });
-      document.getElementById("grandTotal").textContent = grandTotal;
+    function updateTotal(input) {
+      const row = input.closest("tr");
+      const qty = row.querySelectorAll("input")[0].value || 0;
+      const rate = row.querySelectorAll("input")[1].value || 0;
+      const total = qty * rate;
+      row.querySelector(".total").innerText = total;
+      updateGrandTotal();
     }
 
-    // Download as PDF
-    async function downloadPDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
+    function updateGrandTotal() {
+      let total = 0;
+      document.querySelectorAll(".total").forEach(td => total += parseFloat(td.innerText || 0));
+      document.getElementById("grandTotal").innerText = "Grand Total: ₹" + total;
+    }
 
-      // Get content
-      let customer = `
-Customer: ${document.getElementById("customerName").value}
-Mobile: ${document.getElementById("mobileNo").value}
-Location: ${document.getElementById("location").value}
-Electrician: ${document.getElementById("electricianName").value}
-Date: ${document.getElementById("date").value}
-`;
-
-      doc.setFontSize(14);
-      doc.text("⚡ Material Estimate", 14, 20);
-      doc.setFontSize(11);
-      doc.text(customer, 14, 35);
-
-      // Add table
-      let y = 60;
-      doc.setFontSize(12);
-      doc.text("Materials:", 14, y);
-
-      document.querySelectorAll("#materialsTable tbody tr").forEach(row => {
-        y += 10;
-        let material = row.querySelector("td:nth-child(1) select").value;
-        let rating = row.querySelector("td:nth-child(2) select").value;
-        let qty = row.querySelector("td:nth-child(3) input").value;
-        let rate = row.querySelector("td:nth-child(4) input").value;
-        let total = row.querySelector("td:nth-child(5)").textContent;
-
-        doc.text(`${material} (${rating}) | Qty: ${qty} | Rate: ₹${rate} | Total: ₹${total}`, 14, y);
-      });
-
-      y += 15;
-      doc.setFontSize(13);
-      doc.text(`Grand Total: ₹${document.getElementById("grandTotal").textContent}`, 14, y);
-
-      doc.save("Material_Estimate.pdf");
+    function downloadPDF() {
+      const element = document.querySelector(".container");
+      html2pdf().from(element).set({
+        margin: 10,
+        filename: 'Material_Estimate.pdf',
+        html2canvas: { scale: 2 },
+        jsPDF: { orientation: 'portrait' }
+      }).save();
     }
   </script>
 </body>
 </html>
+
