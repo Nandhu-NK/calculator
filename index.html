@@ -47,6 +47,13 @@
       border: 1px solid #ccc;
       width: 220px;
     }
+    .project-select {
+      margin: 15px 0;
+    }
+    .project-select label {
+      font-weight: bold;
+      margin-right: 10px;
+    }
     table {
       width: 100%;
       border-collapse: collapse;
@@ -107,6 +114,15 @@
       <input type="date">
     </div>
 
+    <div class="project-select">
+      <label>Select Project Type:</label>
+      <select id="projectType" onchange="updateProjectMaterials()">
+        <option value="house">House Wiring</option>
+        <option value="industrial">Industrial Wiring</option>
+        <option value="solar">Solar Panel Design</option>
+      </select>
+    </div>
+
     <h2>Materials List</h2>
     <table id="materialsTable">
       <thead>
@@ -130,35 +146,57 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
   <script>
-    const materialOptions = [
-      "1.5 sqmm Wire (Red)", "1.5 sqmm Wire (Black)", "1.5 sqmm Wire (Green)",
-      "2.5 sqmm Wire", "4 sqmm Wire", "6 sqmm Wire", "10 sqmm Wire",
-      "16 sqmm Wire", "25 sqmm Wire", "32A MCB", "63A MCB", "100A MCB",
-      "Single Pole MCB", "Double Pole MCB", "Four Pole MCB",
-      "Distribution Box 4 Way", "Distribution Box 8 Way",
-      "Main Switch 32A", "Main Switch 63A", "Main Switch 100A",
-      "Socket 6A", "Socket 16A", "Switch 6A", "Switch 16A",
-      "Regulator", "Fan 48 Inch", "Fan 56 Inch", "LED Bulb 9W", "LED Bulb 12W",
-      "Tube Light 20W", "Tube Light 40W", "CFL Lamp 18W", "Flood Light 50W",
-      "Flood Light 100W", "Ceiling Rose", "PVC Pipe 20mm", "PVC Pipe 25mm",
-      "PVC Elbow", "PVC Junction Box", "PVC Saddle",
-      "GI Wire 8SWG", "Earthing Plate", "Earthing Rod", "MCB Enclosure",
-      "DB Box Double Door", "Changeover Switch 32A", "Changeover Switch 63A",
-      "Changeover Switch 100A", "Starter 1HP", "Starter 2HP", "Starter 5HP",
-      "Starter 10HP", "Capacitor 2.5 MFD", "Capacitor 4 MFD", "Capacitor 6 MFD",
-      "Capacitor 10 MFD", "Capacitor 25 MFD", "Conduit Clamp",
-      "Service Wire 2 Core", "Service Wire 4 Core", "3 Pin Plug 6A",
-      "3 Pin Plug 16A", "DP Switch 20A", "Isolator 40A", "Isolator 63A",
-      "Timer Switch", "Energy Meter Single Phase", "Energy Meter Three Phase",
-      "Busbar", "Panel Board", "Contactor 9A", "Contactor 12A", "Contactor 25A",
-      "Relay 12V", "Relay 24V", "Relay 230V", "Bell", "Buzzer"
-    ];
+    // Materials categorized by project type
+    const projectMaterials = {
+      house: [
+        "1.5 sqmm Wire (Red)", "1.5 sqmm Wire (Black)", "Socket 6A", "Socket 16A", 
+        "Switch 6A", "Switch 16A", "Regulator", "Fan 48 Inch", "LED Bulb 9W", "Tube Light 20W"
+      ],
+      industrial: [
+        "4 sqmm Wire", "6 sqmm Wire", "10 sqmm Wire", "32A MCB", "63A MCB", "100A MCB", 
+        "Distribution Box 8 Way", "Main Switch 100A", "Starter 5HP", "Contactor 25A"
+      ],
+      solar: [
+        "Solar Panel 250W", "Solar Panel 350W", "Solar Inverter 2kW", "Solar Inverter 5kW", 
+        "Battery 150Ah", "Battery 200Ah", "MCB 32A", "MCB 63A", "DC Wire 4 sqmm", "DC Wire 6 sqmm"
+      ]
+    };
 
-    const ratingOptions = [
-      "1A", "2A", "6A", "10A", "16A", "20A", "25A", "32A", "40A", "63A", "100A",
-      "230V", "440V", "0.5 HP", "1 HP", "2 HP", "3 HP", "5 HP", "10 HP",
-      "9W", "12W", "18W", "20W", "40W", "50W", "100W"
-    ];
+    // Ratings mapped to each material type
+    const materialRatings = {
+      "1.5 sqmm Wire (Red)": ["1.5 sqmm"],
+      "1.5 sqmm Wire (Black)": ["1.5 sqmm"],
+      "4 sqmm Wire": ["4 sqmm"],
+      "6 sqmm Wire": ["6 sqmm"],
+      "10 sqmm Wire": ["10 sqmm"],
+      "Socket 6A": ["6A"],
+      "Socket 16A": ["16A"],
+      "Switch 6A": ["6A"],
+      "Switch 16A": ["16A"],
+      "LED Bulb 9W": ["9W"],
+      "Tube Light 20W": ["20W"],
+      "32A MCB": ["32A"],
+      "63A MCB": ["63A"],
+      "100A MCB": ["100A"],
+      "Starter 5HP": ["5 HP"],
+      "Contactor 25A": ["25A"],
+      "Solar Panel 250W": ["250W"],
+      "Solar Panel 350W": ["350W"],
+      "Solar Inverter 2kW": ["2 kW"],
+      "Solar Inverter 5kW": ["5 kW"],
+      "Battery 150Ah": ["150Ah"],
+      "Battery 200Ah": ["200Ah"],
+      "DC Wire 4 sqmm": ["4 sqmm"],
+      "DC Wire 6 sqmm": ["6 sqmm"]
+    };
+
+    let currentMaterials = projectMaterials.house; // default
+
+    function updateProjectMaterials() {
+      const type = document.getElementById("projectType").value;
+      currentMaterials = projectMaterials[type];
+      document.getElementById("tableBody").innerHTML = ""; // reset table
+    }
 
     function addRow() {
       const tableBody = document.getElementById("tableBody");
@@ -166,14 +204,12 @@
 
       row.innerHTML = `
         <td>
-          <select>
-            ${materialOptions.map(m => `<option value="${m}">${m}</option>`).join("")}
+          <select onchange="updateRatings(this)">
+            ${currentMaterials.map(m => `<option value="${m}">${m}</option>`).join("")}
           </select>
         </td>
         <td>
-          <select>
-            ${ratingOptions.map(r => `<option value="${r}">${r}</option>`).join("")}
-          </select>
+          <select class="ratingSelect"></select>
         </td>
         <td><input type="number" min="1" value="1" onchange="updateTotal(this)"></td>
         <td><input type="number" min="0" value="0" onchange="updateTotal(this)"></td>
@@ -181,6 +217,16 @@
         <td><button class="btn btn-remove" onclick="removeRow(this)">X</button></td>
       `;
       tableBody.appendChild(row);
+
+      // initialize rating for first material
+      updateRatings(row.querySelector("select"));
+    }
+
+    function updateRatings(selectEl) {
+      const material = selectEl.value;
+      const ratingSelect = selectEl.closest("tr").querySelector(".ratingSelect");
+      const ratings = materialRatings[material] || ["N/A"];
+      ratingSelect.innerHTML = ratings.map(r => `<option value="${r}">${r}</option>`).join("");
     }
 
     function removeRow(btn) {
@@ -215,4 +261,3 @@
   </script>
 </body>
 </html>
-
