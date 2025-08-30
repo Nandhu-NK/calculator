@@ -47,13 +47,6 @@
       border: 1px solid #ccc;
       width: 220px;
     }
-    .project-select {
-      margin: 15px 0;
-    }
-    .project-select label {
-      font-weight: bold;
-      margin-right: 10px;
-    }
     table {
       width: 100%;
       border-collapse: collapse;
@@ -96,6 +89,26 @@
       margin-top: 20px;
       font-weight: bold;
     }
+
+    /* Attractive project type selector */
+    .project-type {
+      margin: 15px 0;
+      text-align: center;
+    }
+    .project-type select {
+      padding: 12px 20px;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: 2px solid #0052D4;
+      background: linear-gradient(135deg, #6FB1FC, #4364F7);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      outline: none;
+    }
+    .project-type select:hover {
+      background: linear-gradient(135deg, #0052D4, #6FB1FC);
+    }
   </style>
 </head>
 <body>
@@ -114,12 +127,12 @@
       <input type="date">
     </div>
 
-    <div class="project-select">
-      <label>Select Project Type:</label>
-      <select id="projectType" onchange="updateProjectMaterials()">
-        <option value="house">House Wiring</option>
-        <option value="industrial">Industrial Wiring</option>
-        <option value="solar">Solar Panel Design</option>
+    <div class="project-type">
+      <label style="font-weight:bold; font-size:1.1rem; margin-right:10px;">Select Project Type:</label>
+      <select id="projectType" onchange="changeProjectType()">
+        <option value="house">🏠 House Wiring</option>
+        <option value="industrial">🏭 Industrial Wiring</option>
+        <option value="solar">☀ Solar Panel Design</option>
       </select>
     </div>
 
@@ -135,8 +148,7 @@
           <th>Action</th>
         </tr>
       </thead>
-      <tbody id="tableBody">
-      </tbody>
+      <tbody id="tableBody"></tbody>
     </table>
     <button class="btn btn-add" onclick="addRow()">+ Add Material</button>
     <button class="btn btn-download" onclick="downloadPDF()">⬇ Save as PDF</button>
@@ -146,56 +158,66 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
   <script>
-    // Materials categorized by project type
-    const projectMaterials = {
+    // Material lists for each project type
+    const materials = {
       house: [
-        "1.5 sqmm Wire (Red)", "1.5 sqmm Wire (Black)", "Socket 6A", "Socket 16A", 
-        "Switch 6A", "Switch 16A", "Regulator", "Fan 48 Inch", "LED Bulb 9W", "Tube Light 20W"
+        "1.5 sqmm Wire (Red)", "1.5 sqmm Wire (Black)", "1.5 sqmm Wire (Green)",
+        "2.5 sqmm Wire", "4 sqmm Wire", "6 sqmm Wire", "10 sqmm Wire",
+        "32A MCB", "63A MCB", "100A MCB",
+        "Single Pole MCB", "Double Pole MCB", "Four Pole MCB",
+        "Distribution Box 4 Way", "Distribution Box 8 Way",
+        "Socket 6A", "Socket 16A", "Switch 6A", "Switch 16A",
+        "Fan 48 Inch", "Fan 56 Inch", "LED Bulb 9W", "LED Bulb 12W",
+        "Tube Light 20W", "Tube Light 40W", "CFL Lamp 18W",
+        "Flood Light 50W", "Ceiling Rose", "PVC Pipe 20mm",
+        "PVC Junction Box", "Earthing Rod", "Service Wire 2 Core",
+        "3 Pin Plug 6A", "Regulator", "Bell", "Buzzer", "Energy Meter Single Phase"
       ],
       industrial: [
-        "4 sqmm Wire", "6 sqmm Wire", "10 sqmm Wire", "32A MCB", "63A MCB", "100A MCB", 
-        "Distribution Box 8 Way", "Main Switch 100A", "Starter 5HP", "Contactor 25A"
+        "16 sqmm Wire", "25 sqmm Wire", "50 sqmm Wire", "95 sqmm Wire",
+        "MCB 125A", "MCCB 250A", "MCCB 400A", "MCCB 630A",
+        "Busbar", "Panel Board", "Contactor 9A", "Contactor 12A",
+        "Contactor 25A", "Contactor 50A", "Contactor 100A",
+        "Relay 24V", "Relay 230V", "Overload Relay",
+        "Starter 5HP", "Starter 10HP", "Starter 20HP",
+        "Capacitor Bank", "Changeover Switch 100A", "Changeover Switch 200A",
+        "Cable Tray", "GI Wire 8SWG", "Earthing Plate", "Isolator 200A",
+        "Industrial Socket 32A", "Industrial Socket 63A",
+        "Motor 5HP", "Motor 10HP", "Motor 20HP", "VFD Drive 5HP",
+        "VFD Drive 10HP", "Control Transformer", "Timer Relay",
+        "Push Button Switch", "Limit Switch", "Pilot Lamp"
       ],
       solar: [
-        "Solar Panel 250W", "Solar Panel 350W", "Solar Inverter 2kW", "Solar Inverter 5kW", 
-        "Battery 150Ah", "Battery 200Ah", "MCB 32A", "MCB 63A", "DC Wire 4 sqmm", "DC Wire 6 sqmm"
+        "Solar Panel 150W", "Solar Panel 250W", "Solar Panel 330W",
+        "Solar Panel 450W", "MC4 Connector", "Combiner Box",
+        "DC MCB 32A", "DC MCB 63A", "SPD (DC)", "SPD (AC)",
+        "Inverter 1kW", "Inverter 3kW", "Inverter 5kW", "Inverter 10kW",
+        "Battery 12V 100Ah", "Battery 12V 200Ah", "Battery 2V 500Ah",
+        "Charge Controller 12V", "Charge Controller 24V",
+        "Earthing Kit", "Lightning Arrester",
+        "DC Cable 4 sqmm", "DC Cable 6 sqmm", "DC Cable 10 sqmm",
+        "AC Cable 10 sqmm", "AC Cable 25 sqmm",
+        "Mounting Structure", "Cable Tie", "Junction Box",
+        "Energy Meter (Solar)", "Data Logger", "PV Combiner Fuse",
+        "Isolator DC 1000V", "Isolator AC 63A", "Hybrid Inverter 5kW"
       ]
     };
 
-    // Ratings mapped to each material type
-    const materialRatings = {
-      "1.5 sqmm Wire (Red)": ["1.5 sqmm"],
-      "1.5 sqmm Wire (Black)": ["1.5 sqmm"],
-      "4 sqmm Wire": ["4 sqmm"],
-      "6 sqmm Wire": ["6 sqmm"],
-      "10 sqmm Wire": ["10 sqmm"],
-      "Socket 6A": ["6A"],
-      "Socket 16A": ["16A"],
-      "Switch 6A": ["6A"],
-      "Switch 16A": ["16A"],
-      "LED Bulb 9W": ["9W"],
-      "Tube Light 20W": ["20W"],
-      "32A MCB": ["32A"],
-      "63A MCB": ["63A"],
-      "100A MCB": ["100A"],
-      "Starter 5HP": ["5 HP"],
-      "Contactor 25A": ["25A"],
-      "Solar Panel 250W": ["250W"],
-      "Solar Panel 350W": ["350W"],
-      "Solar Inverter 2kW": ["2 kW"],
-      "Solar Inverter 5kW": ["5 kW"],
-      "Battery 150Ah": ["150Ah"],
-      "Battery 200Ah": ["200Ah"],
-      "DC Wire 4 sqmm": ["4 sqmm"],
-      "DC Wire 6 sqmm": ["6 sqmm"]
+    // Ratings for each project type
+    const ratings = {
+      house: ["1A","2A","6A","10A","16A","20A","25A","32A","40A","63A","100A","230V","9W","12W","18W","20W","40W","50W","100W"],
+      industrial: ["32A","63A","100A","125A","200A","250A","400A","630A","230V","440V","5 HP","10 HP","20 HP","50 HP"],
+      solar: ["12V","24V","48V","100V","230V","330W","450W","1kW","3kW","5kW","10kW","100Ah","200Ah","500Ah"]
     };
 
-    let currentMaterials = projectMaterials.house; // default
+    let currentMaterials = materials.house;
+    let currentRatings = ratings.house;
 
-    function updateProjectMaterials() {
+    function changeProjectType() {
       const type = document.getElementById("projectType").value;
-      currentMaterials = projectMaterials[type];
-      document.getElementById("tableBody").innerHTML = ""; // reset table
+      currentMaterials = materials[type];
+      currentRatings = ratings[type];
+      document.getElementById("tableBody").innerHTML = ""; // clear table
     }
 
     function addRow() {
@@ -204,12 +226,14 @@
 
       row.innerHTML = `
         <td>
-          <select onchange="updateRatings(this)">
+          <select>
             ${currentMaterials.map(m => `<option value="${m}">${m}</option>`).join("")}
           </select>
         </td>
         <td>
-          <select class="ratingSelect"></select>
+          <select>
+            ${currentRatings.map(r => `<option value="${r}">${r}</option>`).join("")}
+          </select>
         </td>
         <td><input type="number" min="1" value="1" onchange="updateTotal(this)"></td>
         <td><input type="number" min="0" value="0" onchange="updateTotal(this)"></td>
@@ -217,16 +241,6 @@
         <td><button class="btn btn-remove" onclick="removeRow(this)">X</button></td>
       `;
       tableBody.appendChild(row);
-
-      // initialize rating for first material
-      updateRatings(row.querySelector("select"));
-    }
-
-    function updateRatings(selectEl) {
-      const material = selectEl.value;
-      const ratingSelect = selectEl.closest("tr").querySelector(".ratingSelect");
-      const ratings = materialRatings[material] || ["N/A"];
-      ratingSelect.innerHTML = ratings.map(r => `<option value="${r}">${r}</option>`).join("");
     }
 
     function removeRow(btn) {
