@@ -155,10 +155,37 @@
 </div>
 
 <script>
+  // ✅ 100 items for each sector
   const materials = {
-    house: ["Ceiling Fan","Tube Light","LED Bulb","Switch Board","Wires 1.5mm","MCB","Socket 5A","Socket 15A","Distribution Board","Conduit Pipe","Door Bell","Regulator","Exhaust Fan","Main Switch","Earth Wire"],
-    industry: ["3 Phase Motor","Contactor","MCB 3P","Industrial Plug","Busbar","Transformer","VFD","Panel Board","Control Cable","MCCB","Relay","Capacitor Bank","Current Transformer","Switchgear","PVC Cable Tray"],
-    solar: ["Solar Panel 250W","Solar Panel 400W","MC4 Connector","DC Cable","Inverter","Battery 150Ah","Battery 220Ah","Junction Box","Earthing Kit","DC MCB","Charge Controller","SPD","PV Combiner Box","Panel Mount","ACDB"]
+    house: [
+      "Ceiling Fan","Tube Light","LED Bulb","Switch Board","Wires 1.5mm","MCB","Socket 5A","Socket 15A","Distribution Board","Conduit Pipe","Door Bell","Regulator","Exhaust Fan","Main Switch","Earth Wire",
+      "Chandelier","CFL Bulb","Smart Switch","Smart Plug","Power Extension","Fan Regulator","Dimmer Switch","LED Strip","Modular Switch","AC Socket","Fan Box","Lamp Holder","Bed Lamp","TV Socket","Internet Router Socket",
+      "RJ45 Socket","Curtain Motor","Water Heater Switch","Iron Box Switch","3 Pin Plug","USB Charger Socket","Smart Hub","Sensor Light","Night Lamp","Step Light","Pendant Light","Wall Sconce","Downlight","Track Light",
+      "Spotlight","Emergency Light","Solar LED Bulb","Motion Sensor Light","Door Sensor","Smoke Detector","CO Detector","Siren Buzzer","Security Camera","Video Doorbell","Smart Thermostat","Smart AC Remote","Water Pump Switch",
+      "Door Lock Switch","Alarm Switch","WiFi Extender","Power Stabilizer","Inverter Switch","Voltage Protector","Earth Leakage Circuit Breaker","Changeover Switch","Fuse Box","Phase Indicator","Neutral Link","Bus Bar","Power Cable",
+      "Telephone Socket","Music System Socket","Remote Controlled Switch","Touch Switch","Glass Panel Switch","Electric Kettle Socket","Oven Switch","Refrigerator Switch","Microwave Switch","Washing Machine Socket","Dishwasher Switch",
+      "Dryer Switch","Mixer Grinder Switch","Rice Cooker Switch","Water Purifier Switch","Chimney Socket","Induction Stove Socket","Juicer Mixer Socket","Hand Blender Switch","Toaster Switch","Hair Dryer Switch","Shaver Switch",
+      "Iron Box Socket","Vacuum Cleaner Socket","Smart Door Lock","Fingerprint Lock","RFID Lock","Smart Door Sensor","Window Sensor","Baby Monitor","Energy Meter","Smart Energy Monitor","Electric Bell","Name Plate Light"
+    ],
+    industry: [
+      "3 Phase Motor","Contactor","MCB 3P","Industrial Plug","Busbar","Transformer","VFD","Panel Board","Control Cable","MCCB","Relay","Capacitor Bank","Current Transformer","Switchgear","PVC Cable Tray",
+      "Power Analyzer","Ammeter","Voltmeter","Energy Meter","Overload Relay","Earth Fault Relay","Protection Relay","Surge Protector","Motor Starter","DOL Starter","Star-Delta Starter","Soft Starter","Motor Protection Circuit Breaker",
+      "Cable Gland","Cable Lug","Ferrule","Heat Shrink","Bus Duct","Isolator","Earthing Rod","Earthing Pit","Lightning Arrester","ACB","VCB","SF6 Breaker","Insulator","Fuse Link","Control Transformer","Auxiliary Contact","Push Button",
+      "Indicating Lamp","Emergency Stop","Limit Switch","Proximity Sensor","Photo Sensor","Inductive Sensor","Capacitive Sensor","PLC","HMI","SCADA","Servo Drive","Servo Motor","Stepper Motor","Encoder","Industrial Fan","Panel Heater",
+      "Cooling Fan","Industrial Socket","Industrial MCB","Distribution Transformer","Potential Transformer","Ring Main Unit","Bus Coupler","Current Relay","Voltage Relay","Frequency Relay","Synchronizing Relay","Synchronoscope","Tachometer",
+      "Earth Resistance Tester","Clamp Meter","Insulation Tester","Megger","Panel Light","Cable Tray","GI Wire","Aluminium Cable","Copper Cable","Control Panel","Motor Panel","APFC Panel","Distribution Panel","Feeder Pillar","Diesel Generator",
+      "UPS","Battery Charger","SMPS","Rectifier","Inverter","Servo Stabilizer","AVR","Cable Ladder","Trunking","Conduits","Industrial Switch","Junction Box","Explosion Proof Switch","Industrial Bell","Industrial Siren"
+    ],
+    solar: [
+      "Solar Panel 250W","Solar Panel 400W","MC4 Connector","DC Cable","Inverter","Battery 150Ah","Battery 220Ah","Junction Box","Earthing Kit","DC MCB","Charge Controller","SPD","PV Combiner Box","Panel Mount","ACDB",
+      "Solar Lantern","Solar Street Light","Solar Water Pump","Solar Fan","Solar Heater","Solar Charger","Hybrid Inverter","On-grid Inverter","Off-grid Inverter","Lithium Battery","Solar AC","Solar Cooler","Solar Induction Stove","Solar Geyser",
+      "Solar Torch","Solar Radio","Solar TV","Solar Refrigerator","Solar Washing Machine","Solar Cooker","Solar Iron","Solar Car Charger","Solar Scooter Charger","Solar EV Charger","Flexible Solar Panel","Monocrystalline Panel","Polycrystalline Panel",
+      "Thin Film Panel","Floating Solar","BIPV Panel","Solar Window","Solar Glass","Solar Roof Tile","Solar Umbrella","Solar Backpack","Solar Power Bank","Solar CCTV","Solar Router","Solar WiFi","Solar Traffic Light","Solar Signal","Solar Beacon",
+      "Solar Marine Light","Solar Garden Light","Solar Path Light","Solar Wall Light","Solar Fence Energizer","Solar Electric Fence","Solar Bug Zapper","Solar Drone Charger","Solar Robot Charger","Solar IoT Device","Solar Pump Controller","Solar VFD",
+      "Solar MCCB","Solar DC Fuse","Solar DC Isolator","Solar Disconnect Switch","Solar SPD","Solar Earthing Strip","Solar Copper Rod","Solar GI Strip","Solar Cable Gland","Solar Cable Lug","Solar Cable Tie","Solar Weather Station","Solar Irrigation System",
+      "Solar Street Pole","Solar Carport","Solar Shed","Solar Shade","Solar Water Heater Controller","Solar Cooling System","Solar Dehydrator","Solar Dryer","Solar Kiln","Solar Water Desalination","Solar Air Cooler","Solar Cold Storage","Solar Freezer",
+      "Solar UPS","Solar Power Station","Solar Microgrid","Solar Nano Grid","Solar Smart Meter","Solar Remote Monitoring","Solar GSM Modem","Solar SCADA","Solar IoT Logger","Solar Data Logger","Solar Tracker","Dual Axis Tracker","Single Axis Tracker"
+    ]
   };
 
   let selectedProject = "house";
