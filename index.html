@@ -7,270 +7,302 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f7fb;
       margin: 0;
       padding: 0;
+      background: #f4f7fb;
+      color: #333;
     }
-
     header {
-      background: #2c3e50;
+      background: #004d99;
       color: white;
       padding: 20px;
       text-align: center;
-      font-size: 24px;
+      font-size: 28px;
       font-weight: bold;
     }
-
-    .customer-details {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
+    .container {
       padding: 20px;
-      background: #ecf0f1;
-      border-bottom: 2px solid #bdc3c7;
+      max-width: 1200px;
+      margin: auto;
     }
-
-    .customer-details label {
-      flex: 1 1 30%;
-      margin: 10px;
+    .customer-info label {
+      display: inline-block;
+      width: 150px;
+      margin-top: 10px;
     }
-
-    .customer-details input {
-      width: 90%;
-      padding: 8px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+    .customer-info input {
+      margin-top: 10px;
+      padding: 6px;
+      width: 250px;
     }
-
-    .selector-container {
+    .project-selector {
       display: flex;
       justify-content: center;
-      margin: 20px;
+      margin: 30px 0;
       gap: 20px;
     }
-
-    .selector-card {
+    .card {
       flex: 1;
-      max-width: 200px;
-      text-align: center;
-      background: white;
+      padding: 20px;
       border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      text-align: center;
       cursor: pointer;
-      transition: transform 0.2s, background 0.2s;
+      transition: transform 0.3s;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
     }
-
-    .selector-card:hover {
-      transform: scale(1.05);
-    }
-
-    .selector-card.active {
-      border: 2px solid #3498db;
-      background: #ecf6ff;
-    }
-
-    .material-section {
-      padding: 20px;
-    }
-
-    .controls {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 15px;
-    }
-
-    .controls input {
-      padding: 8px;
-      width: 60%;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    .controls select {
-      padding: 8px;
-      border-radius: 6px;
-    }
+    .card:hover { transform: scale(1.05); }
+    .house { background: #4CAF50; }
+    .industry { background: #f39c12; }
+    .solar { background: #e74c3c; }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 10px;
-      background: white;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin-top: 20px;
     }
-
     th, td {
-      padding: 12px;
-      border: 1px solid #ddd;
+      border: 1px solid #ccc;
+      padding: 10px;
       text-align: center;
     }
-
-    th {
-      background: #3498db;
-      color: white;
+    th { background: #004d99; color: white; }
+    select, input[type='number'] {
+      padding: 6px;
+      width: 100%;
     }
-
-    tr:nth-child(even) {
-      background: #f9f9f9;
+    .controls {
+      margin: 20px 0;
+      text-align: right;
     }
-
     .btn {
-      background: #3498db;
-      color: white;
+      padding: 10px 15px;
+      margin-left: 10px;
       border: none;
-      padding: 10px 20px;
       border-radius: 6px;
       cursor: pointer;
-      margin: 10px 0;
+      font-weight: bold;
     }
-
-    .btn:hover {
-      background: #2980b9;
+    .btn-add { background: #4CAF50; color: white; }
+    .btn-download { background: #2196F3; color: white; }
+    .search-sort {
+      display: flex;
+      justify-content: space-between;
+      margin: 20px 0;
+    }
+    .search-sort input, .search-sort select {
+      padding: 8px;
+      width: 48%;
     }
   </style>
 </head>
 <body>
+  <header>Material Estimator</header>
+  <div class="container">
+    <div class="customer-info">
+      <label>Customer Name:</label><input type="text"><br>
+      <label>Mobile No:</label><input type="text"><br>
+      <label>Location:</label><input type="text"><br>
+      <label>Electrician Name:</label><input type="text"><br>
+      <label>Date:</label><input type="date"><br>
+    </div>
 
-<header>Material Estimator</header>
+    <h2 style="margin-top:30px;">Select Project Type</h2>
+    <div class="project-selector">
+      <div class="card house" onclick="loadMaterials('house')">🏠 House Wiring</div>
+      <div class="card industry" onclick="loadMaterials('industry')">🏭 Industrial Wiring</div>
+      <div class="card solar" onclick="loadMaterials('solar')">☀️ Solar Panel Design</div>
+    </div>
 
-<div class="customer-details">
-  <label>Customer Name: <input type="text"></label>
-  <label>Mobile No: <input type="text"></label>
-  <label>Location: <input type="text"></label>
-  <label>Electrician Name: <input type="text"></label>
-  <label>Date: <input type="date"></label>
-</div>
+    <div class="search-sort">
+      <input type="text" id="searchBox" placeholder="Search material..." onkeyup="searchMaterial()">
+      <select id="sortOptions" onchange="sortTable()">
+        <option value="">Sort By</option>
+        <option value="material">Material</option>
+        <option value="rating">Rating</option>
+      </select>
+    </div>
 
-<div class="selector-container">
-  <div class="selector-card active" data-type="house">🏠 <br> House Wiring</div>
-  <div class="selector-card" data-type="industry">🏭 <br> Industrial Wiring</div>
-  <div class="selector-card" data-type="solar">☀️ <br> Solar Panel</div>
-</div>
+    <div class="controls">
+      <button class="btn btn-add" onclick="addRow()">+ Add Material</button>
+      <button class="btn btn-download" onclick="downloadPDF()">⬇ Save as PDF</button>
+    </div>
 
-<div class="material-section">
-  <div class="controls">
-    <input type="text" id="searchBox" placeholder="Search material...">
-    <select id="sortOptions">
-      <option value="name">Sort by Name</option>
-      <option value="rating">Sort by Rating</option>
-    </select>
+    <table id="materialTable">
+      <thead>
+        <tr>
+          <th>Material</th>
+          <th>Rating</th>
+          <th>Quantity</th>
+          <th>Rate (Optional)</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
   </div>
 
-  <table id="materialTable">
-    <thead>
-      <tr>
-        <th>Material</th>
-        <th>Rating</th>
-        <th>Quantity</th>
-        <th>Rate (Optional)</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    const materials = {
+      house: [
+        {name:"Switch 6A", rating:["6A","10A"]},
+        {name:"Socket 16A", rating:["16A","20A"]},
+        {name:"Ceiling Fan", rating:["60W","75W","100W"]},
+        {name:"LED Bulb", rating:["5W","9W","12W"]},
+        {name:"MCB", rating:["6A","16A","32A"]},
+        {name:"1 Sqmm Wire", rating:["90m Coil","180m Coil"]},
+        {name:"2.5 Sqmm Wire", rating:["90m Coil","180m Coil"]},
+        {name:"Regulator", rating:["2 Step","5 Step"]},
+        {name:"Tube Light", rating:["18W","36W"]},
+        {name:"Main Switch", rating:["32A","63A"]},
+        // ...extend up to 100
+      ],
+      industry: [
+        {name:"3 Phase Motor", rating:["1HP","3HP","5HP","10HP"]},
+        {name:"Industrial MCB", rating:["32A","63A","100A"]},
+        {name:"Contactor", rating:["9A","18A","25A","32A"]},
+        {name:"Overload Relay", rating:["5-8A","9-14A","20-32A"]},
+        {name:"Cable 10 Sqmm", rating:["Single Core","Multi Core"]},
+        {name:"Busbar", rating:["100A","200A","400A"]},
+        {name:"Distribution Box", rating:["4 Way","8 Way","12 Way"]},
+        {name:"Panel Meter", rating:["Analog","Digital"]},
+        {name:"MCB Box", rating:["SPN","TPN"]},
+        {name:"Industrial Plug", rating:["16A","32A","63A"]},
+        // ...extend up to 100
+      ],
+      solar: [
+        {name:"Solar Panel", rating:["100W","200W","300W","500W"]},
+        {name:"Charge Controller", rating:["12V","24V","48V"]},
+        {name:"Battery", rating:["100Ah","150Ah","200Ah"]},
+        {name:"Inverter", rating:["1kW","2kW","5kW"]},
+        {name:"MC4 Connector", rating:["Male","Female"]},
+        {name:"DC Cable", rating:["2.5 Sqmm","4 Sqmm","6 Sqmm"]},
+        {name:"Earthing Kit", rating:["Copper","GI"]},
+        {name:"Junction Box", rating:["2 in 2 out","4 in 4 out"]},
+        {name:"Solar Pump", rating:["1HP","3HP"]},
+        {name:"Solar Street Light", rating:["12W","24W","40W"]},
+        // ...extend up to 100
+      ]
+    };
 
-  <button class="btn" onclick="saveAsPDF()">💾 Save as PDF</button>
-</div>
+    let currentMaterials = [];
 
-<script>
-  const materials = {
-    house: [
-      { name: "Ceiling Fan", ratings: ["60W", "75W", "100W"] },
-      { name: "Tube Light", ratings: ["20W", "40W", "60W"] },
-      { name: "Bulb", ratings: ["5W", "9W", "12W", "18W"] },
-      { name: "Switch", ratings: ["5A", "10A", "15A"] },
-      { name: "Socket", ratings: ["5A", "15A"] },
-      { name: "MCB", ratings: ["6A", "10A", "16A", "32A"] },
-      { name: "Wires", ratings: ["1.5 sqmm", "2.5 sqmm", "4 sqmm"] },
-      { name: "Main Switch", ratings: ["32A", "40A", "63A"] },
-      { name: "Distribution Box", ratings: ["4 Way", "6 Way", "8 Way"] },
-      { name: "Door Bell", ratings: ["220V"] },
-      // add up to 100 items for house wiring...
-    ],
-    industry: [
-      { name: "3-Phase Motor", ratings: ["1HP", "2HP", "5HP", "10HP"] },
-      { name: "Industrial Switchgear", ratings: ["32A", "63A", "100A"] },
-      { name: "Contactor", ratings: ["9A", "12A", "18A", "25A"] },
-      { name: "Overload Relay", ratings: ["1-1.6A", "2.5-4A", "4-6A"] },
-      { name: "Panel Board", ratings: ["6 Way", "12 Way", "24 Way"] },
-      { name: "Cable", ratings: ["10 sqmm", "16 sqmm", "25 sqmm"] },
-      { name: "MCB", ratings: ["32A", "63A", "100A"] },
-      { name: "MCCB", ratings: ["100A", "200A", "400A"] },
-      { name: "Busbar", ratings: ["100A", "200A", "400A"] },
-      { name: "Industrial Plug", ratings: ["16A", "32A", "63A"] },
-      // add up to 100 items for industry wiring...
-    ],
-    solar: [
-      { name: "Solar Panel", ratings: ["150W", "250W", "400W", "500W"] },
-      { name: "Solar Inverter", ratings: ["1kVA", "3kVA", "5kVA"] },
-      { name: "Solar Battery", ratings: ["12V 100Ah", "12V 150Ah", "24V 200Ah"] },
-      { name: "Charge Controller", ratings: ["10A", "20A", "40A"] },
-      { name: "MC4 Connector", ratings: ["Standard"] },
-      { name: "DC Cable", ratings: ["2.5 sqmm", "4 sqmm", "6 sqmm"] },
-      { name: "ACDB Box", ratings: ["Single Phase", "Three Phase"] },
-      { name: "DCDB Box", ratings: ["1 in 1 out", "2 in 2 out"] },
-      { name: "Earthing Kit", ratings: ["Copper", "GI"] },
-      { name: "Solar Mounting Structure", ratings: ["1kW", "3kW", "5kW"] },
-      // add up to 100 items for solar...
-    ]
-  };
+    function loadMaterials(type) {
+      currentMaterials = materials[type];
+      const tbody = document.querySelector("#materialTable tbody");
+      tbody.innerHTML = "";
+      addRow();
+    }
 
-  const tableBody = document.querySelector("#materialTable tbody");
-  const selectorCards = document.querySelectorAll(".selector-card");
-  const searchBox = document.getElementById("searchBox");
-  const sortOptions = document.getElementById("sortOptions");
+    function addRow() {
+      const tbody = document.querySelector("#materialTable tbody");
+      const row = document.createElement("tr");
 
-  let currentType = "house";
+      // Material dropdown
+      const materialCell = document.createElement("td");
+      const materialSelect = document.createElement("select");
+      materialSelect.onchange = function(){ updateRating(this, ratingSelect); };
+      currentMaterials.forEach(m => {
+        const opt = document.createElement("option");
+        opt.value = m.name;
+        opt.textContent = m.name;
+        materialSelect.appendChild(opt);
+      });
+      materialCell.appendChild(materialSelect);
+      row.appendChild(materialCell);
 
-  function renderTable(type) {
-    tableBody.innerHTML = "";
-    materials[type].forEach(item => {
-      let row = `<tr>
-        <td>${item.name}</td>
-        <td>
-          <select>
-            ${item.ratings.map(r => `<option>${r}</option>`).join("")}
-          </select>
-        </td>
-        <td><input type="number" min="1" value="1"></td>
-        <td><input type="number" placeholder="₹"></td>
-      </tr>`;
-      tableBody.innerHTML += row;
-    });
-  }
+      // Rating dropdown
+      const ratingCell = document.createElement("td");
+      const ratingSelect = document.createElement("select");
+      currentMaterials[0].rating.forEach(r => {
+        const opt = document.createElement("option");
+        opt.value = r;
+        opt.textContent = r;
+        ratingSelect.appendChild(opt);
+      });
+      ratingCell.appendChild(ratingSelect);
+      row.appendChild(ratingCell);
 
-  selectorCards.forEach(card => {
-    card.addEventListener("click", () => {
-      selectorCards.forEach(c => c.classList.remove("active"));
-      card.classList.add("active");
-      currentType = card.dataset.type;
-      renderTable(currentType);
-    });
-  });
+      // Quantity
+      const qtyCell = document.createElement("td");
+      const qtyInput = document.createElement("input");
+      qtyInput.type = "number";
+      qtyInput.value = 1;
+      qtyInput.min = 1;
+      qtyInput.oninput = function(){ updateTotal(row); };
+      qtyCell.appendChild(qtyInput);
+      row.appendChild(qtyCell);
 
-  searchBox.addEventListener("keyup", () => {
-    let filter = searchBox.value.toLowerCase();
-    document.querySelectorAll("#materialTable tbody tr").forEach(row => {
-      row.style.display = row.cells[0].innerText.toLowerCase().includes(filter) ? "" : "none";
-    });
-  });
+      // Rate
+      const rateCell = document.createElement("td");
+      const rateInput = document.createElement("input");
+      rateInput.type = "number";
+      rateInput.placeholder = "Optional";
+      rateInput.oninput = function(){ updateTotal(row); };
+      rateCell.appendChild(rateInput);
+      row.appendChild(rateCell);
 
-  sortOptions.addEventListener("change", () => {
-    let rows = Array.from(tableBody.rows);
-    let type = sortOptions.value;
-    rows.sort((a, b) => {
-      let textA = type === "name" ? a.cells[0].innerText : a.cells[1].innerText;
-      let textB = type === "name" ? b.cells[0].innerText : b.cells[1].innerText;
-      return textA.localeCompare(textB, undefined, { numeric: true });
-    });
-    rows.forEach(row => tableBody.appendChild(row));
-  });
+      // Total
+      const totalCell = document.createElement("td");
+      totalCell.textContent = "0";
+      row.appendChild(totalCell);
 
-  function saveAsPDF() {
-    alert("Save as PDF function can be integrated using jsPDF library.");
-  }
+      tbody.appendChild(row);
+      updateTotal(row);
+    }
 
-  renderTable(currentType);
-</script>
+    function updateRating(materialSelect, ratingSelect) {
+      const selected = currentMaterials.find(m => m.name === materialSelect.value);
+      ratingSelect.innerHTML = "";
+      selected.rating.forEach(r => {
+        const opt = document.createElement("option");
+        opt.value = r;
+        opt.textContent = r;
+        ratingSelect.appendChild(opt);
+      });
+    }
+
+    function updateTotal(row) {
+      const qty = row.cells[2].querySelector("input").value;
+      const rate = row.cells[3].querySelector("input").value;
+      const totalCell = row.cells[4];
+      totalCell.textContent = (qty && rate) ? qty * rate : 0;
+    }
+
+    function searchMaterial() {
+      const filter = document.getElementById("searchBox").value.toUpperCase();
+      const rows = document.querySelector("#materialTable tbody").rows;
+      for (let i = 0; i < rows.length; i++) {
+        const txt = rows[i].cells[0].querySelector("select").value;
+        rows[i].style.display = txt.toUpperCase().indexOf(filter) > -1 ? "" : "none";
+      }
+    }
+
+    function sortTable() {
+      const option = document.getElementById("sortOptions").value;
+      const rows = Array.from(document.querySelector("#materialTable tbody").rows);
+      if(option === "material") {
+        rows.sort((a,b)=> a.cells[0].querySelector("select").value.localeCompare(b.cells[0].querySelector("select").value));
+      } else if(option === "rating") {
+        rows.sort((a,b)=> a.cells[1].querySelector("select").value.localeCompare(b.cells[1].querySelector("select").value));
+      }
+      rows.forEach(r=> document.querySelector("#materialTable tbody").appendChild(r));
+    }
+
+    function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.text("Material Estimator Report", 20, 20);
+      doc.html(document.querySelector("#materialTable"), {
+        callback: function (doc) {
+          doc.save("Material_Estimator.pdf");
+        },
+        x: 10,
+        y: 30
+      });
+    }
+  </script>
 </body>
 </html>
