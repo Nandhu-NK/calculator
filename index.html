@@ -7,302 +7,356 @@
   <style>
     body {
       font-family: Arial, sans-serif;
+      background: #f5f7fa;
       margin: 0;
       padding: 0;
-      background: #f4f7fb;
-      color: #333;
     }
+
     header {
       background: #004d99;
       color: white;
       padding: 20px;
       text-align: center;
-      font-size: 28px;
-      font-weight: bold;
     }
-    .container {
-      padding: 20px;
-      max-width: 1200px;
-      margin: auto;
+
+    .form-section {
+      display: flex;
+      justify-content: space-around;
+      padding: 15px;
+      background: #e6f0ff;
+      border-bottom: 2px solid #004d99;
     }
-    .customer-info label {
-      display: inline-block;
-      width: 150px;
-      margin-top: 10px;
+
+    .form-section input {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      width: 180px;
     }
-    .customer-info input {
-      margin-top: 10px;
-      padding: 6px;
-      width: 250px;
-    }
+
     .project-selector {
       display: flex;
       justify-content: center;
-      margin: 30px 0;
+      margin: 20px 0;
       gap: 20px;
     }
+
     .card {
-      flex: 1;
+      background: white;
       padding: 20px;
       border-radius: 12px;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
       text-align: center;
       cursor: pointer;
-      transition: transform 0.3s;
-      color: white;
-      font-size: 18px;
-      font-weight: bold;
+      transition: transform 0.2s;
+      width: 150px;
     }
-    .card:hover { transform: scale(1.05); }
-    .house { background: #4CAF50; }
-    .industry { background: #f39c12; }
-    .solar { background: #e74c3c; }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .card h3 {
+      margin: 10px 0 0;
+    }
+
+    .house { border-top: 5px solid #4CAF50; }
+    .industry { border-top: 5px solid #ff9800; }
+    .solar { border-top: 5px solid #fbc02d; }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      margin: 20px;
+      gap: 10px;
+    }
+
+    .controls input, .controls select {
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
 
     table {
-      width: 100%;
+      width: 95%;
+      margin: auto;
       border-collapse: collapse;
-      margin-top: 20px;
+      background: white;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
     }
+
     th, td {
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
       padding: 10px;
       text-align: center;
     }
-    th { background: #004d99; color: white; }
-    select, input[type='number'] {
-      padding: 6px;
-      width: 100%;
+
+    th {
+      background: #004d99;
+      color: white;
     }
-    .controls {
-      margin: 20px 0;
-      text-align: right;
-    }
-    .btn {
-      padding: 10px 15px;
-      margin-left: 10px;
+
+    tr:nth-child(even) { background: #f9f9f9; }
+
+    .download-btn {
+      margin: 20px auto;
+      display: block;
+      padding: 12px 20px;
+      background: #004d99;
+      color: white;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
-      font-weight: bold;
     }
-    .btn-add { background: #4CAF50; color: white; }
-    .btn-download { background: #2196F3; color: white; }
-    .search-sort {
-      display: flex;
-      justify-content: space-between;
-      margin: 20px 0;
-    }
-    .search-sort input, .search-sort select {
-      padding: 8px;
-      width: 48%;
+
+    .download-btn:hover {
+      background: #003366;
     }
   </style>
 </head>
 <body>
-  <header>Material Estimator</header>
-  <div class="container">
-    <div class="customer-info">
-      <label>Customer Name:</label><input type="text"><br>
-      <label>Mobile No:</label><input type="text"><br>
-      <label>Location:</label><input type="text"><br>
-      <label>Electrician Name:</label><input type="text"><br>
-      <label>Date:</label><input type="date"><br>
-    </div>
 
-    <h2 style="margin-top:30px;">Select Project Type</h2>
-    <div class="project-selector">
-      <div class="card house" onclick="loadMaterials('house')">🏠 House Wiring</div>
-      <div class="card industry" onclick="loadMaterials('industry')">🏭 Industrial Wiring</div>
-      <div class="card solar" onclick="loadMaterials('solar')">☀️ Solar Panel Design</div>
-    </div>
+  <header>
+    <h1>Material Estimator</h1>
+  </header>
 
-    <div class="search-sort">
-      <input type="text" id="searchBox" placeholder="Search material..." onkeyup="searchMaterial()">
-      <select id="sortOptions" onchange="sortTable()">
-        <option value="">Sort By</option>
-        <option value="material">Material</option>
-        <option value="rating">Rating</option>
-      </select>
-    </div>
-
-    <div class="controls">
-      <button class="btn btn-add" onclick="addRow()">+ Add Material</button>
-      <button class="btn btn-download" onclick="downloadPDF()">⬇ Save as PDF</button>
-    </div>
-
-    <table id="materialTable">
-      <thead>
-        <tr>
-          <th>Material</th>
-          <th>Rating</th>
-          <th>Quantity</th>
-          <th>Rate (Optional)</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+  <!-- Customer details -->
+  <div class="form-section">
+    <input type="text" placeholder="Customer Name">
+    <input type="text" placeholder="Customer Mobile No">
+    <input type="text" placeholder="Location">
+    <input type="text" placeholder="Electrician Name">
+    <input type="date">
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- Project type selector -->
+  <div class="project-selector">
+    <div class="card house" onclick="loadMaterials('house')">
+      🏠<h3>House Wiring</h3>
+    </div>
+    <div class="card industry" onclick="loadMaterials('industry')">
+      🏭<h3>Industrial Wiring</h3>
+    </div>
+    <div class="card solar" onclick="loadMaterials('solar')">
+      ☀️<h3>Solar Panel</h3>
+    </div>
+  </div>
+
+  <!-- Search and Sort -->
+  <div class="controls">
+    <input type="text" id="searchBox" onkeyup="searchTable()" placeholder="Search material...">
+    <select id="sortOptions" onchange="sortTable()">
+      <option value="0">Sort by Material</option>
+      <option value="1">Sort by Rating</option>
+    </select>
+  </div>
+
+  <!-- Materials Table -->
+  <table id="materialsTable">
+    <thead>
+      <tr>
+        <th>Material</th>
+        <th>Rating</th>
+        <th>Quantity</th>
+        <th>Rate (Optional)</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <button class="download-btn" onclick="window.print()">Download as PDF</button>
+
   <script>
     const materials = {
       house: [
-        {name:"Switch 6A", rating:["6A","10A"]},
-        {name:"Socket 16A", rating:["16A","20A"]},
-        {name:"Ceiling Fan", rating:["60W","75W","100W"]},
-        {name:"LED Bulb", rating:["5W","9W","12W"]},
-        {name:"MCB", rating:["6A","16A","32A"]},
-        {name:"1 Sqmm Wire", rating:["90m Coil","180m Coil"]},
-        {name:"2.5 Sqmm Wire", rating:["90m Coil","180m Coil"]},
-        {name:"Regulator", rating:["2 Step","5 Step"]},
-        {name:"Tube Light", rating:["18W","36W"]},
-        {name:"Main Switch", rating:["32A","63A"]},
-        // ...extend up to 100
+        { name: "1. Switch (6A)", rating: "6A" },
+        { name: "2. Switch (16A)", rating: "16A" },
+        { name: "3. Socket (6A)", rating: "6A" },
+        { name: "4. Socket (16A)", rating: "16A" },
+        { name: "5. Ceiling Fan", rating: "60W" },
+        { name: "6. Tube Light", rating: "40W" },
+        { name: "7. LED Bulb", rating: "9W" },
+        { name: "8. Exhaust Fan", rating: "40W" },
+        { name: "9. Distribution Box", rating: "Single Phase" },
+        { name: "10. MCB", rating: "6A" },
+        { name: "11. MCB", rating: "16A" },
+        { name: "12. MCB", rating: "32A" },
+        { name: "13. ELCB", rating: "30mA" },
+        { name: "14. Main Switch", rating: "32A" },
+        { name: "15. 1.5 sqmm Wire", rating: "1.5 sqmm" },
+        { name: "16. 2.5 sqmm Wire", rating: "2.5 sqmm" },
+        { name: "17. 4 sqmm Wire", rating: "4 sqmm" },
+        { name: "18. 6 sqmm Wire", rating: "6 sqmm" },
+        { name: "19. 10 sqmm Wire", rating: "10 sqmm" },
+        { name: "20. PVC Pipe", rating: "20mm" },
+        { name: "21. PVC Pipe", rating: "25mm" },
+        { name: "22. PVC Pipe", rating: "32mm" },
+        { name: "23. Junction Box", rating: "Standard" },
+        { name: "24. Bulb Holder", rating: "B22" },
+        { name: "25. Ceiling Rose", rating: "2 Terminal" },
+        { name: "26. Fan Regulator", rating: "Electronic" },
+        { name: "27. Angle Holder", rating: "B22" },
+        { name: "28. Batten Holder", rating: "B22" },
+        { name: "29. Three Pin Plug", rating: "6A" },
+        { name: "30. Three Pin Plug", rating: "16A" },
+        { name: "31. Telephone Socket", rating: "RJ11" },
+        { name: "32. TV Socket", rating: "Coaxial" },
+        { name: "33. Data Socket", rating: "RJ45" },
+        { name: "34. Lamp", rating: "60W" },
+        { name: "35. Door Bell", rating: "AC" },
+        { name: "36. Step Down Transformer", rating: "230V/12V" },
+        { name: "37. Inverter", rating: "600VA" },
+        { name: "38. Battery", rating: "150Ah" },
+        { name: "39. Earth Electrode", rating: "Copper" },
+        { name: "40. Earthing Wire", rating: "8 SWG" },
+        { name: "41. Flexible Cable", rating: "3 Core" },
+        { name: "42. Casing Capping", rating: "25mm" },
+        { name: "43. Clips", rating: "Standard" },
+        { name: "44. Screws", rating: "Standard" },
+        { name: "45. Insulation Tape", rating: "PVC" },
+        { name: "46. Bulb (Incandescent)", rating: "100W" },
+        { name: "47. LED Panel Light", rating: "12W" },
+        { name: "48. LED Downlight", rating: "15W" },
+        { name: "49. Water Heater", rating: "2000W" },
+        { name: "50. AC Unit", rating: "1.5 Ton" },
+        // Extend till 100
       ],
       industry: [
-        {name:"3 Phase Motor", rating:["1HP","3HP","5HP","10HP"]},
-        {name:"Industrial MCB", rating:["32A","63A","100A"]},
-        {name:"Contactor", rating:["9A","18A","25A","32A"]},
-        {name:"Overload Relay", rating:["5-8A","9-14A","20-32A"]},
-        {name:"Cable 10 Sqmm", rating:["Single Core","Multi Core"]},
-        {name:"Busbar", rating:["100A","200A","400A"]},
-        {name:"Distribution Box", rating:["4 Way","8 Way","12 Way"]},
-        {name:"Panel Meter", rating:["Analog","Digital"]},
-        {name:"MCB Box", rating:["SPN","TPN"]},
-        {name:"Industrial Plug", rating:["16A","32A","63A"]},
-        // ...extend up to 100
+        { name: "1. MCCB", rating: "100A" },
+        { name: "2. MCCB", rating: "200A" },
+        { name: "3. MCCB", rating: "400A" },
+        { name: "4. ACB", rating: "800A" },
+        { name: "5. ACB", rating: "1000A" },
+        { name: "6. Contactor", rating: "32A" },
+        { name: "7. Contactor", rating: "63A" },
+        { name: "8. Contactor", rating: "100A" },
+        { name: "9. Relay", rating: "Overload" },
+        { name: "10. Relay", rating: "Timer" },
+        { name: "11. Motor", rating: "1HP" },
+        { name: "12. Motor", rating: "5HP" },
+        { name: "13. Motor", rating: "10HP" },
+        { name: "14. Motor Starter", rating: "DOL" },
+        { name: "15. Motor Starter", rating: "Star Delta" },
+        { name: "16. VFD", rating: "1HP" },
+        { name: "17. VFD", rating: "5HP" },
+        { name: "18. VFD", rating: "10HP" },
+        { name: "19. Transformer", rating: "25kVA" },
+        { name: "20. Transformer", rating: "63kVA" },
+        { name: "21. Transformer", rating: "100kVA" },
+        { name: "22. Busbar", rating: "Copper" },
+        { name: "23. Cable Tray", rating: "300mm" },
+        { name: "24. Cable Tray", rating: "600mm" },
+        { name: "25. Industrial Wire", rating: "10 sqmm" },
+        { name: "26. Industrial Wire", rating: "25 sqmm" },
+        { name: "27. Industrial Wire", rating: "50 sqmm" },
+        { name: "28. Industrial Socket", rating: "32A" },
+        { name: "29. Industrial Socket", rating: "63A" },
+        { name: "30. Industrial Socket", rating: "125A" },
+        { name: "31. MCC Panel", rating: "Standard" },
+        { name: "32. PCC Panel", rating: "Standard" },
+        { name: "33. APFC Panel", rating: "Standard" },
+        { name: "34. Distribution Box", rating: "Three Phase" },
+        { name: "35. CT", rating: "100/5A" },
+        { name: "36. CT", rating: "200/5A" },
+        { name: "37. PT", rating: "11kV/110V" },
+        { name: "38. Insulator", rating: "Pin Type" },
+        { name: "39. Insulator", rating: "Disc Type" },
+        { name: "40. Isolator", rating: "11kV" },
+        { name: "41. Isolator", rating: "33kV" },
+        { name: "42. Circuit Breaker", rating: "VCB" },
+        { name: "43. Circuit Breaker", rating: "SF6" },
+        { name: "44. Indicator Lamp", rating: "Red" },
+        { name: "45. Indicator Lamp", rating: "Green" },
+        { name: "46. Indicator Lamp", rating: "Yellow" },
+        { name: "47. Ammeter", rating: "0–100A" },
+        { name: "48. Voltmeter", rating: "0–500V" },
+        { name: "49. Energy Meter", rating: "Three Phase" },
+        { name: "50. Earth Electrode", rating: "GI" },
+        // Extend till 100
       ],
       solar: [
-        {name:"Solar Panel", rating:["100W","200W","300W","500W"]},
-        {name:"Charge Controller", rating:["12V","24V","48V"]},
-        {name:"Battery", rating:["100Ah","150Ah","200Ah"]},
-        {name:"Inverter", rating:["1kW","2kW","5kW"]},
-        {name:"MC4 Connector", rating:["Male","Female"]},
-        {name:"DC Cable", rating:["2.5 Sqmm","4 Sqmm","6 Sqmm"]},
-        {name:"Earthing Kit", rating:["Copper","GI"]},
-        {name:"Junction Box", rating:["2 in 2 out","4 in 4 out"]},
-        {name:"Solar Pump", rating:["1HP","3HP"]},
-        {name:"Solar Street Light", rating:["12W","24W","40W"]},
-        // ...extend up to 100
+        { name: "1. Solar Panel", rating: "150W" },
+        { name: "2. Solar Panel", rating: "250W" },
+        { name: "3. Solar Panel", rating: "350W" },
+        { name: "4. Solar Panel", rating: "450W" },
+        { name: "5. Solar Panel", rating: "500W" },
+        { name: "6. Inverter", rating: "1kVA" },
+        { name: "7. Inverter", rating: "3kVA" },
+        { name: "8. Inverter", rating: "5kVA" },
+        { name: "9. Inverter", rating: "10kVA" },
+        { name: "10. Charge Controller", rating: "12V" },
+        { name: "11. Charge Controller", rating: "24V" },
+        { name: "12. Charge Controller", rating: "48V" },
+        { name: "13. Battery", rating: "100Ah" },
+        { name: "14. Battery", rating: "150Ah" },
+        { name: "15. Battery", rating: "200Ah" },
+        { name: "16. Battery", rating: "250Ah" },
+        { name: "17. Solar Cable", rating: "4 sqmm" },
+        { name: "18. Solar Cable", rating: "6 sqmm" },
+        { name: "19. Solar Cable", rating: "10 sqmm" },
+        { name: "20. MC4 Connector", rating: "Standard" },
+        { name: "21. DC MCB", rating: "32A" },
+        { name: "22. DC MCB", rating: "63A" },
+        { name: "23. DC SPD", rating: "1000V" },
+        { name: "24. AC MCB", rating: "32A" },
+        { name: "25. AC SPD", rating: "415V" },
+        { name: "26. Earthing Kit", rating: "Standard" },
+        { name: "27. Lightning Arrester", rating: "Standard" },
+        { name: "28. Module Mounting Structure", rating: "MS" },
+        { name: "29. Module Mounting Structure", rating: "Aluminium" },
+        { name: "30. Net Meter", rating: "Single Phase" },
+        { name: "31. Net Meter", rating: "Three Phase" },
+        { name: "32. DC Cable", rating: "25 sqmm" },
+        { name: "33. Junction Box", rating: "DC" },
+        { name: "34. Junction Box", rating: "AC" },
+        { name: "35. Data Logger", rating: "WiFi" },
+        { name: "36. Data Logger", rating: "GPRS" },
+        { name: "37. SCADA System", rating: "Industrial" },
+        { name: "38. On-Grid Inverter", rating: "5kVA" },
+        { name: "39. Off-Grid Inverter", rating: "5kVA" },
+        { name: "40. Hybrid Inverter", rating: "10kVA" },
+        { name: "41. Cable Glands", rating: "Standard" },
+        { name: "42. Cable Ties", rating: "Standard" },
+        { name: "43. Fuses", rating: "32A" },
+        { name: "44. Fuses", rating: "63A" },
+        { name: "45. Switch Disconnector", rating: "DC" },
+        { name: "46. Monitoring Device", rating: "Smart" },
+        { name: "47. Solar Pump Controller", rating: "5HP" },
+        { name: "48. Solar Pump Controller", rating: "10HP" },
+        { name: "49. PV Combiner Box", rating: "Standard" },
+        { name: "50. Weather Station", rating: "Standard" },
+        // Extend till 100
       ]
     };
 
-    let currentMaterials = [];
-
     function loadMaterials(type) {
-      currentMaterials = materials[type];
-      const tbody = document.querySelector("#materialTable tbody");
-      tbody.innerHTML = "";
-      addRow();
-    }
-
-    function addRow() {
-      const tbody = document.querySelector("#materialTable tbody");
-      const row = document.createElement("tr");
-
-      // Material dropdown
-      const materialCell = document.createElement("td");
-      const materialSelect = document.createElement("select");
-      materialSelect.onchange = function(){ updateRating(this, ratingSelect); };
-      currentMaterials.forEach(m => {
-        const opt = document.createElement("option");
-        opt.value = m.name;
-        opt.textContent = m.name;
-        materialSelect.appendChild(opt);
-      });
-      materialCell.appendChild(materialSelect);
-      row.appendChild(materialCell);
-
-      // Rating dropdown
-      const ratingCell = document.createElement("td");
-      const ratingSelect = document.createElement("select");
-      currentMaterials[0].rating.forEach(r => {
-        const opt = document.createElement("option");
-        opt.value = r;
-        opt.textContent = r;
-        ratingSelect.appendChild(opt);
-      });
-      ratingCell.appendChild(ratingSelect);
-      row.appendChild(ratingCell);
-
-      // Quantity
-      const qtyCell = document.createElement("td");
-      const qtyInput = document.createElement("input");
-      qtyInput.type = "number";
-      qtyInput.value = 1;
-      qtyInput.min = 1;
-      qtyInput.oninput = function(){ updateTotal(row); };
-      qtyCell.appendChild(qtyInput);
-      row.appendChild(qtyCell);
-
-      // Rate
-      const rateCell = document.createElement("td");
-      const rateInput = document.createElement("input");
-      rateInput.type = "number";
-      rateInput.placeholder = "Optional";
-      rateInput.oninput = function(){ updateTotal(row); };
-      rateCell.appendChild(rateInput);
-      row.appendChild(rateCell);
-
-      // Total
-      const totalCell = document.createElement("td");
-      totalCell.textContent = "0";
-      row.appendChild(totalCell);
-
-      tbody.appendChild(row);
-      updateTotal(row);
-    }
-
-    function updateRating(materialSelect, ratingSelect) {
-      const selected = currentMaterials.find(m => m.name === materialSelect.value);
-      ratingSelect.innerHTML = "";
-      selected.rating.forEach(r => {
-        const opt = document.createElement("option");
-        opt.value = r;
-        opt.textContent = r;
-        ratingSelect.appendChild(opt);
+      const tableBody = document.querySelector("#materialsTable tbody");
+      tableBody.innerHTML = "";
+      materials[type].forEach(item => {
+        let row = `<tr>
+          <td>${item.name}</td>
+          <td>${item.rating}</td>
+          <td><input type="number" min="0" style="width:70px"></td>
+          <td><input type="number" min="0" style="width:100px"></td>
+        </tr>`;
+        tableBody.innerHTML += row;
       });
     }
 
-    function updateTotal(row) {
-      const qty = row.cells[2].querySelector("input").value;
-      const rate = row.cells[3].querySelector("input").value;
-      const totalCell = row.cells[4];
-      totalCell.textContent = (qty && rate) ? qty * rate : 0;
-    }
-
-    function searchMaterial() {
-      const filter = document.getElementById("searchBox").value.toUpperCase();
-      const rows = document.querySelector("#materialTable tbody").rows;
-      for (let i = 0; i < rows.length; i++) {
-        const txt = rows[i].cells[0].querySelector("select").value;
-        rows[i].style.display = txt.toUpperCase().indexOf(filter) > -1 ? "" : "none";
-      }
+    function searchTable() {
+      let input = document.getElementById("searchBox").value.toLowerCase();
+      let rows = document.querySelectorAll("#materialsTable tbody tr");
+      rows.forEach(row => {
+        row.style.display = row.innerText.toLowerCase().includes(input) ? "" : "none";
+      });
     }
 
     function sortTable() {
-      const option = document.getElementById("sortOptions").value;
-      const rows = Array.from(document.querySelector("#materialTable tbody").rows);
-      if(option === "material") {
-        rows.sort((a,b)=> a.cells[0].querySelector("select").value.localeCompare(b.cells[0].querySelector("select").value));
-      } else if(option === "rating") {
-        rows.sort((a,b)=> a.cells[1].querySelector("select").value.localeCompare(b.cells[1].querySelector("select").value));
-      }
-      rows.forEach(r=> document.querySelector("#materialTable tbody").appendChild(r));
-    }
+      let option = document.getElementById("sortOptions").value;
+      let tbody = document.querySelector("#materialsTable tbody");
+      let rows = Array.from(tbody.querySelectorAll("tr"));
 
-    function downloadPDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      doc.text("Material Estimator Report", 20, 20);
-      doc.html(document.querySelector("#materialTable"), {
-        callback: function (doc) {
-          doc.save("Material_Estimator.pdf");
-        },
-        x: 10,
-        y: 30
-      });
-    }
-  </script>
-</body>
-</html>
+      rows.sort((a, b) => {
+        let textA = a.cells[option].innerText;
+        let text
