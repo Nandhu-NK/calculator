@@ -2,107 +2,131 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Material Estimator</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f6f9;
+      background: #f4f7fb;
       margin: 0;
       padding: 0;
     }
 
     header {
-      background: linear-gradient(90deg, #0072ff, #00c6ff);
+      background: #2c3e50;
       color: white;
-      padding: 15px;
+      padding: 20px;
       text-align: center;
       font-size: 24px;
       font-weight: bold;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
 
-    .container {
-      max-width: 1200px;
-      margin: 20px auto;
+    .customer-details {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
       padding: 20px;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      background: #ecf0f1;
+      border-bottom: 2px solid #bdc3c7;
     }
 
-    .customer-info input {
-      margin: 5px;
+    .customer-details label {
+      flex: 1 1 30%;
+      margin: 10px;
+    }
+
+    .customer-details input {
+      width: 90%;
       padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .selector-container {
+      display: flex;
+      justify-content: center;
+      margin: 20px;
+      gap: 20px;
+    }
+
+    .selector-card {
+      flex: 1;
+      max-width: 200px;
+      text-align: center;
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .selector-card:hover {
+      transform: scale(1.05);
+    }
+
+    .selector-card.active {
+      border: 2px solid #3498db;
+      background: #ecf6ff;
+    }
+
+    .material-section {
+      padding: 20px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    .controls input {
+      padding: 8px;
+      width: 60%;
       border: 1px solid #ccc;
       border-radius: 6px;
     }
 
-    .project-selector {
-      display: flex;
-      justify-content: space-around;
-      margin: 20px 0;
+    .controls select {
+      padding: 8px;
+      border-radius: 6px;
     }
-
-    .card {
-      flex: 1;
-      margin: 0 10px;
-      padding: 20px;
-      border-radius: 12px;
-      text-align: center;
-      cursor: pointer;
-      color: white;
-      font-weight: bold;
-      transition: 0.3s;
-    }
-    .card:hover { transform: scale(1.05); }
-
-    .house { background: #4CAF50; }
-    .industry { background: #FF9800; }
-    .solar { background: #2196F3; }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      margin: 20px 0;
+      margin-top: 10px;
+      background: white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
+
     th, td {
+      padding: 12px;
       border: 1px solid #ddd;
-      padding: 10px;
       text-align: center;
     }
+
     th {
-      background: #0072ff;
+      background: #3498db;
       color: white;
     }
 
-    .actions button {
-      padding: 8px 15px;
-      margin: 5px;
+    tr:nth-child(even) {
+      background: #f9f9f9;
+    }
+
+    .btn {
+      background: #3498db;
+      color: white;
       border: none;
+      padding: 10px 20px;
       border-radius: 6px;
       cursor: pointer;
-      color: white;
-      font-weight: bold;
+      margin: 10px 0;
     }
-    .add { background: #4CAF50; }
-    .pdf { background: #FF5722; }
 
-    /* Autocomplete style */
-    .autocomplete-suggestions {
-      border: 1px solid #ccc;
-      background: white;
-      position: absolute;
-      max-height: 200px;
-      overflow-y: auto;
-      z-index: 1000;
-      width: 200px;
-    }
-    .autocomplete-suggestion {
-      padding: 8px;
-      cursor: pointer;
-    }
-    .autocomplete-suggestion:hover {
-      background: #f0f0f0;
+    .btn:hover {
+      background: #2980b9;
     }
   </style>
 </head>
@@ -110,26 +134,27 @@
 
 <header>Material Estimator</header>
 
-<div class="container">
-  <div class="customer-info">
-    <input type="text" placeholder="Customer Name">
-    <input type="text" placeholder="Customer Mobile No">
-    <input type="text" placeholder="Location">
-    <input type="text" placeholder="Electrician Name">
-    <input type="date">
-  </div>
+<div class="customer-details">
+  <label>Customer Name: <input type="text"></label>
+  <label>Mobile No: <input type="text"></label>
+  <label>Location: <input type="text"></label>
+  <label>Electrician Name: <input type="text"></label>
+  <label>Date: <input type="date"></label>
+</div>
 
-  <!-- Project Type Selector -->
-  <div class="project-selector">
-    <div class="card house" onclick="selectProject('house')">🏠 House Wiring</div>
-    <div class="card industry" onclick="selectProject('industry')">🏭 Industrial Wiring</div>
-    <div class="card solar" onclick="selectProject('solar')">☀️ Solar Panel</div>
-  </div>
+<div class="selector-container">
+  <div class="selector-card active" data-type="house">🏠 <br> House Wiring</div>
+  <div class="selector-card" data-type="industry">🏭 <br> Industrial Wiring</div>
+  <div class="selector-card" data-type="solar">☀️ <br> Solar Panel</div>
+</div>
 
-  <!-- Search Box -->
-  <div style="margin-bottom:15px; position:relative;">
-    <input type="text" id="searchBox" placeholder="🔍 Search Material..." style="padding:8px;width:200px;border-radius:6px;border:1px solid #ccc;">
-    <div id="autocomplete-list" class="autocomplete-suggestions"></div>
+<div class="material-section">
+  <div class="controls">
+    <input type="text" id="searchBox" placeholder="Search material...">
+    <select id="sortOptions">
+      <option value="name">Sort by Name</option>
+      <option value="rating">Sort by Rating</option>
+    </select>
   </div>
 
   <table id="materialTable">
@@ -137,148 +162,115 @@
       <tr>
         <th>Material</th>
         <th>Rating</th>
-        <th>Qty</th>
+        <th>Quantity</th>
         <th>Rate (Optional)</th>
-        <th>Total</th>
-        <th>Remove</th>
       </tr>
     </thead>
-    <tbody id="materialBody">
-      <!-- Dynamic rows -->
-    </tbody>
+    <tbody></tbody>
   </table>
 
-  <div class="actions">
-    <button class="add" onclick="addRow()">+ Add Material</button>
-    <button class="pdf" onclick="downloadPDF()">📥 Save as PDF</button>
-  </div>
+  <button class="btn" onclick="saveAsPDF()">💾 Save as PDF</button>
 </div>
 
 <script>
-  // ✅ 100 items for each sector
   const materials = {
     house: [
-      "Ceiling Fan","Tube Light","LED Bulb","Switch Board","Wires 1.5mm","MCB","Socket 5A","Socket 15A","Distribution Board","Conduit Pipe","Door Bell","Regulator","Exhaust Fan","Main Switch","Earth Wire",
-      "Chandelier","CFL Bulb","Smart Switch","Smart Plug","Power Extension","Fan Regulator","Dimmer Switch","LED Strip","Modular Switch","AC Socket","Fan Box","Lamp Holder","Bed Lamp","TV Socket","Internet Router Socket",
-      "RJ45 Socket","Curtain Motor","Water Heater Switch","Iron Box Switch","3 Pin Plug","USB Charger Socket","Smart Hub","Sensor Light","Night Lamp","Step Light","Pendant Light","Wall Sconce","Downlight","Track Light",
-      "Spotlight","Emergency Light","Solar LED Bulb","Motion Sensor Light","Door Sensor","Smoke Detector","CO Detector","Siren Buzzer","Security Camera","Video Doorbell","Smart Thermostat","Smart AC Remote","Water Pump Switch",
-      "Door Lock Switch","Alarm Switch","WiFi Extender","Power Stabilizer","Inverter Switch","Voltage Protector","Earth Leakage Circuit Breaker","Changeover Switch","Fuse Box","Phase Indicator","Neutral Link","Bus Bar","Power Cable",
-      "Telephone Socket","Music System Socket","Remote Controlled Switch","Touch Switch","Glass Panel Switch","Electric Kettle Socket","Oven Switch","Refrigerator Switch","Microwave Switch","Washing Machine Socket","Dishwasher Switch",
-      "Dryer Switch","Mixer Grinder Switch","Rice Cooker Switch","Water Purifier Switch","Chimney Socket","Induction Stove Socket","Juicer Mixer Socket","Hand Blender Switch","Toaster Switch","Hair Dryer Switch","Shaver Switch",
-      "Iron Box Socket","Vacuum Cleaner Socket","Smart Door Lock","Fingerprint Lock","RFID Lock","Smart Door Sensor","Window Sensor","Baby Monitor","Energy Meter","Smart Energy Monitor","Electric Bell","Name Plate Light"
+      { name: "Ceiling Fan", ratings: ["60W", "75W", "100W"] },
+      { name: "Tube Light", ratings: ["20W", "40W", "60W"] },
+      { name: "Bulb", ratings: ["5W", "9W", "12W", "18W"] },
+      { name: "Switch", ratings: ["5A", "10A", "15A"] },
+      { name: "Socket", ratings: ["5A", "15A"] },
+      { name: "MCB", ratings: ["6A", "10A", "16A", "32A"] },
+      { name: "Wires", ratings: ["1.5 sqmm", "2.5 sqmm", "4 sqmm"] },
+      { name: "Main Switch", ratings: ["32A", "40A", "63A"] },
+      { name: "Distribution Box", ratings: ["4 Way", "6 Way", "8 Way"] },
+      { name: "Door Bell", ratings: ["220V"] },
+      // add up to 100 items for house wiring...
     ],
     industry: [
-      "3 Phase Motor","Contactor","MCB 3P","Industrial Plug","Busbar","Transformer","VFD","Panel Board","Control Cable","MCCB","Relay","Capacitor Bank","Current Transformer","Switchgear","PVC Cable Tray",
-      "Power Analyzer","Ammeter","Voltmeter","Energy Meter","Overload Relay","Earth Fault Relay","Protection Relay","Surge Protector","Motor Starter","DOL Starter","Star-Delta Starter","Soft Starter","Motor Protection Circuit Breaker",
-      "Cable Gland","Cable Lug","Ferrule","Heat Shrink","Bus Duct","Isolator","Earthing Rod","Earthing Pit","Lightning Arrester","ACB","VCB","SF6 Breaker","Insulator","Fuse Link","Control Transformer","Auxiliary Contact","Push Button",
-      "Indicating Lamp","Emergency Stop","Limit Switch","Proximity Sensor","Photo Sensor","Inductive Sensor","Capacitive Sensor","PLC","HMI","SCADA","Servo Drive","Servo Motor","Stepper Motor","Encoder","Industrial Fan","Panel Heater",
-      "Cooling Fan","Industrial Socket","Industrial MCB","Distribution Transformer","Potential Transformer","Ring Main Unit","Bus Coupler","Current Relay","Voltage Relay","Frequency Relay","Synchronizing Relay","Synchronoscope","Tachometer",
-      "Earth Resistance Tester","Clamp Meter","Insulation Tester","Megger","Panel Light","Cable Tray","GI Wire","Aluminium Cable","Copper Cable","Control Panel","Motor Panel","APFC Panel","Distribution Panel","Feeder Pillar","Diesel Generator",
-      "UPS","Battery Charger","SMPS","Rectifier","Inverter","Servo Stabilizer","AVR","Cable Ladder","Trunking","Conduits","Industrial Switch","Junction Box","Explosion Proof Switch","Industrial Bell","Industrial Siren"
+      { name: "3-Phase Motor", ratings: ["1HP", "2HP", "5HP", "10HP"] },
+      { name: "Industrial Switchgear", ratings: ["32A", "63A", "100A"] },
+      { name: "Contactor", ratings: ["9A", "12A", "18A", "25A"] },
+      { name: "Overload Relay", ratings: ["1-1.6A", "2.5-4A", "4-6A"] },
+      { name: "Panel Board", ratings: ["6 Way", "12 Way", "24 Way"] },
+      { name: "Cable", ratings: ["10 sqmm", "16 sqmm", "25 sqmm"] },
+      { name: "MCB", ratings: ["32A", "63A", "100A"] },
+      { name: "MCCB", ratings: ["100A", "200A", "400A"] },
+      { name: "Busbar", ratings: ["100A", "200A", "400A"] },
+      { name: "Industrial Plug", ratings: ["16A", "32A", "63A"] },
+      // add up to 100 items for industry wiring...
     ],
     solar: [
-      "Solar Panel 250W","Solar Panel 400W","MC4 Connector","DC Cable","Inverter","Battery 150Ah","Battery 220Ah","Junction Box","Earthing Kit","DC MCB","Charge Controller","SPD","PV Combiner Box","Panel Mount","ACDB",
-      "Solar Lantern","Solar Street Light","Solar Water Pump","Solar Fan","Solar Heater","Solar Charger","Hybrid Inverter","On-grid Inverter","Off-grid Inverter","Lithium Battery","Solar AC","Solar Cooler","Solar Induction Stove","Solar Geyser",
-      "Solar Torch","Solar Radio","Solar TV","Solar Refrigerator","Solar Washing Machine","Solar Cooker","Solar Iron","Solar Car Charger","Solar Scooter Charger","Solar EV Charger","Flexible Solar Panel","Monocrystalline Panel","Polycrystalline Panel",
-      "Thin Film Panel","Floating Solar","BIPV Panel","Solar Window","Solar Glass","Solar Roof Tile","Solar Umbrella","Solar Backpack","Solar Power Bank","Solar CCTV","Solar Router","Solar WiFi","Solar Traffic Light","Solar Signal","Solar Beacon",
-      "Solar Marine Light","Solar Garden Light","Solar Path Light","Solar Wall Light","Solar Fence Energizer","Solar Electric Fence","Solar Bug Zapper","Solar Drone Charger","Solar Robot Charger","Solar IoT Device","Solar Pump Controller","Solar VFD",
-      "Solar MCCB","Solar DC Fuse","Solar DC Isolator","Solar Disconnect Switch","Solar SPD","Solar Earthing Strip","Solar Copper Rod","Solar GI Strip","Solar Cable Gland","Solar Cable Lug","Solar Cable Tie","Solar Weather Station","Solar Irrigation System",
-      "Solar Street Pole","Solar Carport","Solar Shed","Solar Shade","Solar Water Heater Controller","Solar Cooling System","Solar Dehydrator","Solar Dryer","Solar Kiln","Solar Water Desalination","Solar Air Cooler","Solar Cold Storage","Solar Freezer",
-      "Solar UPS","Solar Power Station","Solar Microgrid","Solar Nano Grid","Solar Smart Meter","Solar Remote Monitoring","Solar GSM Modem","Solar SCADA","Solar IoT Logger","Solar Data Logger","Solar Tracker","Dual Axis Tracker","Single Axis Tracker"
+      { name: "Solar Panel", ratings: ["150W", "250W", "400W", "500W"] },
+      { name: "Solar Inverter", ratings: ["1kVA", "3kVA", "5kVA"] },
+      { name: "Solar Battery", ratings: ["12V 100Ah", "12V 150Ah", "24V 200Ah"] },
+      { name: "Charge Controller", ratings: ["10A", "20A", "40A"] },
+      { name: "MC4 Connector", ratings: ["Standard"] },
+      { name: "DC Cable", ratings: ["2.5 sqmm", "4 sqmm", "6 sqmm"] },
+      { name: "ACDB Box", ratings: ["Single Phase", "Three Phase"] },
+      { name: "DCDB Box", ratings: ["1 in 1 out", "2 in 2 out"] },
+      { name: "Earthing Kit", ratings: ["Copper", "GI"] },
+      { name: "Solar Mounting Structure", ratings: ["1kW", "3kW", "5kW"] },
+      // add up to 100 items for solar...
     ]
   };
 
-  let selectedProject = "house";
-  function selectProject(type){
-    selectedProject = type;
-    addRow();
-  }
+  const tableBody = document.querySelector("#materialTable tbody");
+  const selectorCards = document.querySelectorAll(".selector-card");
+  const searchBox = document.getElementById("searchBox");
+  const sortOptions = document.getElementById("sortOptions");
 
-  function addRow(){
-    const tbody = document.getElementById("materialBody");
-    const tr = document.createElement("tr");
+  let currentType = "house";
 
-    // Material dropdown
-    const td1 = document.createElement("td");
-    const select1 = document.createElement("select");
-    materials[selectedProject].forEach(m=>{
-      let opt=document.createElement("option");
-      opt.value=opt.textContent=m;
-      select1.appendChild(opt);
+  function renderTable(type) {
+    tableBody.innerHTML = "";
+    materials[type].forEach(item => {
+      let row = `<tr>
+        <td>${item.name}</td>
+        <td>
+          <select>
+            ${item.ratings.map(r => `<option>${r}</option>`).join("")}
+          </select>
+        </td>
+        <td><input type="number" min="1" value="1"></td>
+        <td><input type="number" placeholder="₹"></td>
+      </tr>`;
+      tableBody.innerHTML += row;
     });
-    td1.appendChild(select1);
-
-    // Rating dropdown
-    const td2 = document.createElement("td");
-    const select2 = document.createElement("select");
-    ["1A","5A","10A","16A","32A","6W","10W","20W","50W","100W","250W","400W"].forEach(r=>{
-      let opt=document.createElement("option");
-      opt.value=opt.textContent=r;
-      select2.appendChild(opt);
-    });
-    td2.appendChild(select2);
-
-    // Qty input
-    const td3=document.createElement("td");
-    const qty=document.createElement("input");
-    qty.type="number"; qty.value=1; qty.min=1;
-    qty.oninput=()=>calcRow(tr);
-    td3.appendChild(qty);
-
-    // Rate input
-    const td4=document.createElement("td");
-    const rate=document.createElement("input");
-    rate.type="number"; rate.placeholder="₹ Rate";
-    rate.oninput=()=>calcRow(tr);
-    td4.appendChild(rate);
-
-    // Total
-    const td5=document.createElement("td");
-    td5.textContent="0";
-
-    // Remove button
-    const td6=document.createElement("td");
-    const btn=document.createElement("button");
-    btn.textContent="❌";
-    btn.onclick=()=>tr.remove();
-    td6.appendChild(btn);
-
-    tr.append(td1,td2,td3,td4,td5,td6);
-    tbody.appendChild(tr);
   }
 
-  function calcRow(tr){
-    const qty=tr.querySelector("td:nth-child(3) input").value||0;
-    const rate=tr.querySelector("td:nth-child(4) input").value||0;
-    tr.querySelector("td:nth-child(5)").textContent=qty*rate;
-  }
-
-  function downloadPDF(){
-    alert("PDF Export function goes here!");
-  }
-
-  // 🔍 Autocomplete
-  const searchBox=document.getElementById("searchBox");
-  const autoList=document.getElementById("autocomplete-list");
-
-  searchBox.addEventListener("input", function(){
-    const val=this.value.toLowerCase();
-    autoList.innerHTML="";
-    if(!val) return;
-    let allItems=[...materials.house,...materials.industry,...materials.solar];
-    let filtered=allItems.filter(item=>item.toLowerCase().includes(val));
-    filtered.forEach(item=>{
-      let div=document.createElement("div");
-      div.textContent=item;
-      div.className="autocomplete-suggestion";
-      div.onclick=()=>{
-        searchBox.value=item;
-        autoList.innerHTML="";
-      }
-      autoList.appendChild(div);
+  selectorCards.forEach(card => {
+    card.addEventListener("click", () => {
+      selectorCards.forEach(c => c.classList.remove("active"));
+      card.classList.add("active");
+      currentType = card.dataset.type;
+      renderTable(currentType);
     });
   });
-</script>
 
+  searchBox.addEventListener("keyup", () => {
+    let filter = searchBox.value.toLowerCase();
+    document.querySelectorAll("#materialTable tbody tr").forEach(row => {
+      row.style.display = row.cells[0].innerText.toLowerCase().includes(filter) ? "" : "none";
+    });
+  });
+
+  sortOptions.addEventListener("change", () => {
+    let rows = Array.from(tableBody.rows);
+    let type = sortOptions.value;
+    rows.sort((a, b) => {
+      let textA = type === "name" ? a.cells[0].innerText : a.cells[1].innerText;
+      let textB = type === "name" ? b.cells[0].innerText : b.cells[1].innerText;
+      return textA.localeCompare(textB, undefined, { numeric: true });
+    });
+    rows.forEach(row => tableBody.appendChild(row));
+  });
+
+  function saveAsPDF() {
+    alert("Save as PDF function can be integrated using jsPDF library.");
+  }
+
+  renderTable(currentType);
+</script>
 </body>
 </html>
