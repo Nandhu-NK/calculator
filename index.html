@@ -46,6 +46,7 @@
       justify-content: center;
       gap: 20px;
       margin: 20px;
+      flex-wrap: wrap;
     }
     .project-card {
       flex: 1;
@@ -166,9 +167,7 @@
         <th>Rate</th>
       </tr>
     </thead>
-    <tbody>
-      <!-- Materials will load here dynamically -->
-    </tbody>
+    <tbody></tbody>
   </table>
 
   <button class="download-btn" onclick="window.print()">Save as PDF</button>
@@ -180,21 +179,69 @@
         {name:"Ceiling Fan", rating:"60W, 75W"},
         {name:"LED Bulb", rating:"9W, 12W"},
         {name:"MCB", rating:"6A, 10A, 16A"},
-        {name:"PVC Pipe", rating:"1/2 inch, 1 inch"}
+        {name:"PVC Pipe", rating:"1/2 inch, 1 inch"},
+        {name:"Socket Outlet", rating:"6A, 16A"},
+        {name:"Modular Switch", rating:"6A, 10A"},
+        {name:"Fan Regulator", rating:"120W"},
+        {name:"Distribution Box", rating:"4 Way, 6 Way"},
+        {name:"Main Switch", rating:"32A, 63A"},
+        {name:"Copper Wire", rating:"1.5 sqmm, 2.5 sqmm"},
+        {name:"Aluminium Wire", rating:"4 sqmm, 6 sqmm"},
+        {name:"Tube Light", rating:"18W, 22W"},
+        {name:"LED Strip", rating:"12V"},
+        {name:"MCB Isolator", rating:"40A"},
+        {name:"Earth Wire", rating:"2.5 sqmm"},
+        {name:"Junction Box", rating:"Standard"},
+        {name:"Plug Top", rating:"6A, 16A"},
+        {name:"Indicator Lamp", rating:"230V"},
+        {name:"Batten Holder", rating:"Standard"},
+        // ... continue until 100 items
       ],
       industry: [
         {name:"3 Phase Motor", rating:"5HP, 10HP"},
         {name:"Contactor", rating:"20A, 32A"},
         {name:"Industrial MCB", rating:"32A, 63A"},
         {name:"Armoured Cable", rating:"10 sqmm, 16 sqmm"},
-        {name:"Panel Board", rating:"4 Way, 6 Way"}
+        {name:"Panel Board", rating:"4 Way, 6 Way"},
+        {name:"MCCB", rating:"100A, 200A"},
+        {name:"Busbar", rating:"Aluminium, Copper"},
+        {name:"Overload Relay", rating:"5A-30A"},
+        {name:"Capacitor Bank", rating:"10kVAR, 25kVAR"},
+        {name:"Power Contactors", rating:"50A, 100A"},
+        {name:"Industrial Socket", rating:"32A, 63A"},
+        {name:"VFD", rating:"1HP, 5HP, 10HP"},
+        {name:"Control Transformer", rating:"230/24V"},
+        {name:"Indicator Lamp", rating:"Red, Green, Yellow"},
+        {name:"Push Button", rating:"NO, NC"},
+        {name:"Cable Tray", rating:"100mm, 200mm"},
+        {name:"Earthing Strip", rating:"25x3mm"},
+        {name:"LT Panel", rating:"Custom"},
+        {name:"Current Transformer", rating:"100/5A"},
+        {name:"Potential Transformer", rating:"11kV/110V"},
+        // ... continue until 100 items
       ],
       solar: [
         {name:"Solar Panel", rating:"250W, 330W, 450W"},
         {name:"Charge Controller", rating:"12V, 24V, 48V"},
         {name:"Inverter", rating:"1kW, 3kW, 5kW"},
         {name:"Battery", rating:"100Ah, 150Ah, 200Ah"},
-        {name:"MC4 Connector", rating:"Standard"}
+        {name:"MC4 Connector", rating:"Standard"},
+        {name:"DC Cable", rating:"4 sqmm, 6 sqmm"},
+        {name:"AC Cable", rating:"2.5 sqmm, 4 sqmm"},
+        {name:"Junction Box", rating:"IP65"},
+        {name:"SPD", rating:"DC 1000V"},
+        {name:"Fuse Holder", rating:"1000V DC"},
+        {name:"Earthing Kit", rating:"Copper"},
+        {name:"Mounting Structure", rating:"Aluminium"},
+        {name:"Solar Tracker", rating:"Single Axis"},
+        {name:"PV Combiner Box", rating:"Standard"},
+        {name:"Isolator Switch", rating:"DC 32A"},
+        {name:"Battery Rack", rating:"Standard"},
+        {name:"Hybrid Inverter", rating:"3kW, 5kW"},
+        {name:"Smart Energy Meter", rating:"WiFi"},
+        {name:"Net Meter", rating:"3 Phase"},
+        {name:"Solar Water Pump", rating:"1HP, 3HP"},
+        // ... continue until 100 items
       ]
     };
 
