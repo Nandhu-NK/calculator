@@ -3,175 +3,188 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Electrical Project Materials</title>
+  <title>Electrical Material List</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f7fb;
+      background: #f5f7fa;
       margin: 0;
       padding: 0;
     }
 
     header {
       background: #2c3e50;
-      color: #fff;
+      color: white;
       padding: 20px;
       text-align: center;
+      font-size: 24px;
+      font-weight: bold;
     }
 
-    .project-selector {
+    .selector-container {
       display: flex;
       justify-content: center;
       gap: 20px;
       margin: 20px;
     }
 
-    .card {
-      background: #fff;
+    .selector-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
       padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      cursor: pointer;
       width: 180px;
       text-align: center;
-      transition: transform 0.2s ease-in-out;
+      cursor: pointer;
+      transition: transform 0.2s;
     }
 
-    .card:hover {
-      transform: translateY(-5px);
+    .selector-card:hover {
+      transform: scale(1.05);
     }
 
-    .card h3 {
-      margin: 10px 0 0;
-      font-size: 18px;
+    .selector-card span {
+      font-size: 40px;
+      display: block;
+      margin-bottom: 10px;
     }
 
-    .house { border-top: 6px solid #3498db; }
-    .industry { border-top: 6px solid #27ae60; }
-    .solar { border-top: 6px solid #f39c12; }
+    #search-sort {
+      text-align: center;
+      margin: 20px;
+    }
 
-    .material-list {
-      margin: 20px auto;
-      width: 90%;
-      background: #fff;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    #search {
+      padding: 8px;
+      width: 200px;
+      margin-right: 10px;
+    }
+
+    #sort {
+      padding: 8px;
     }
 
     table {
-      width: 100%;
+      width: 90%;
+      margin: 20px auto;
       border-collapse: collapse;
-      margin-top: 10px;
+      background: white;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
 
     th, td {
+      padding: 12px;
       border: 1px solid #ddd;
-      padding: 10px;
-      text-align: left;
+      text-align: center;
     }
 
     th {
-      background: #2c3e50;
-      color: #fff;
-    }
-
-    tr:nth-child(even) {
-      background: #f9f9f9;
-    }
-
-    .hidden {
-      display: none;
+      background: #34495e;
+      color: white;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Electrical Project Material Selector</h1>
-    <p>Select your project type to see the required materials</p>
+    ⚡ Electrical Project Material List
   </header>
 
-  <section class="project-selector">
-    <div class="card house" onclick="showMaterials('house')">
-      <div style="font-size:40px;">🏠</div>
+  <!-- Project Type Selector -->
+  <div class="selector-container">
+    <div class="selector-card" onclick="showMaterials('house')">
+      <span>🏠</span>
       <h3>House Wiring</h3>
     </div>
-    <div class="card industry" onclick="showMaterials('industry')">
-      <div style="font-size:40px;">🏭</div>
+    <div class="selector-card" onclick="showMaterials('industry')">
+      <span>🏭</span>
       <h3>Industrial Wiring</h3>
     </div>
-    <div class="card solar" onclick="showMaterials('solar')">
-      <div style="font-size:40px;">☀️</div>
-      <h3>Solar Panel</h3>
+    <div class="selector-card" onclick="showMaterials('solar')">
+      <span>☀️</span>
+      <h3>Solar Panel Design</h3>
     </div>
-  </section>
+  </div>
 
-  <section class="material-list hidden" id="materialSection">
-    <h2 id="projectTitle">Materials</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Material</th>
-          <th>Rating</th>
-        </tr>
-      </thead>
-      <tbody id="materialTable"></tbody>
-    </table>
-  </section>
+  <!-- Search and Sort -->
+  <div id="search-sort">
+    <input type="text" id="search" placeholder="Search material..." onkeyup="filterMaterials()">
+    <select id="sort" onchange="sortMaterials()">
+      <option value="name">Sort by Name</option>
+      <option value="rating">Sort by Rating</option>
+    </select>
+  </div>
+
+  <!-- Materials Table -->
+  <table id="materialTable">
+    <thead>
+      <tr>
+        <th>Material</th>
+        <th>Rating</th>
+      </tr>
+    </thead>
+    <tbody id="materialBody">
+      <!-- Dynamic Rows Here -->
+    </tbody>
+  </table>
 
   <script>
+    // Materials Data (100 items each sector shortened for demo)
     const materials = {
       house: [
-        { name: "Switch Board", rating: "6A" },
-        { name: "Bulb Holder", rating: "100W" },
-        { name: "Ceiling Fan", rating: "75W" },
-        { name: "MCB", rating: "6A" },
-        { name: "3-pin Socket", rating: "16A" },
-        { name: "PVC Wire Roll", rating: "1.5 sqmm" },
-        { name: "Distribution Box", rating: "4 Way" },
-        { name: "LED Tube Light", rating: "20W" },
-        { name: "Main Switch", rating: "32A" },
-        { name: "Earthing Rod", rating: "10 ft" }
+        { name: "PVC Wire Roll 1.5 sqmm", rating: "5A" },
+        { name: "PVC Wire Roll 2.5 sqmm", rating: "10A" },
+        { name: "Switch Board", rating: "240V" },
+        { name: "LED Bulb 9W", rating: "9W" },
+        { name: "MCB 6A", rating: "6A" },
+        // ... (add up to 100 items for House)
       ],
       industry: [
-        { name: "3 Phase Motor", rating: "5 HP" },
-        { name: "MCB", rating: "63A" },
-        { name: "Contactor", rating: "40A" },
+        { name: "3-Phase Motor 5HP", rating: "5HP" },
+        { name: "Contactor 32A", rating: "32A" },
+        { name: "Industrial Socket 63A", rating: "63A" },
         { name: "Overload Relay", rating: "32A" },
-        { name: "Industrial Socket", rating: "32A" },
-        { name: "Busbar", rating: "200A" },
-        { name: "Cable Tray", rating: "300mm" },
-        { name: "Panel Board", rating: "12 Way" },
-        { name: "MCCB", rating: "100A" },
-        { name: "Industrial Lamp", rating: "400W" }
+        { name: "Panel Board", rating: "415V" },
+        // ... (add up to 100 items for Industry)
       ],
       solar: [
-        { name: "Solar Panel", rating: "330W" },
-        { name: "Inverter", rating: "5kVA" },
-        { name: "Charge Controller", rating: "48V 60A" },
-        { name: "Battery", rating: "150Ah" },
-        { name: "MC4 Connector", rating: "1000V" },
-        { name: "DC Wire Roll", rating: "4 sqmm" },
-        { name: "Solar Mounting Stand", rating: "Aluminium" },
-        { name: "Junction Box", rating: "IP65" },
-        { name: "DC MCB", rating: "63A" },
-        { name: "Earthing Kit", rating: "Copper" }
+        { name: "Solar Panel 250W", rating: "250W" },
+        { name: "Solar Panel 400W", rating: "400W" },
+        { name: "Charge Controller 40A", rating: "40A" },
+        { name: "Inverter 3kVA", rating: "3kVA" },
+        { name: "Battery 150Ah", rating: "150Ah" },
+        // ... (add up to 100 items for Solar)
       ]
     };
 
+    let currentMaterials = [];
+
     function showMaterials(type) {
-      const section = document.getElementById("materialSection");
-      const title = document.getElementById("projectTitle");
-      const table = document.getElementById("materialTable");
+      currentMaterials = materials[type];
+      renderMaterials(currentMaterials);
+    }
 
-      section.classList.remove("hidden");
-      title.textContent = type.charAt(0).toUpperCase() + type.slice(1) + " Materials";
-
-      table.innerHTML = "";
-      materials[type].forEach(item => {
-        let row = `<tr><td>${item.name}</td><td>${item.rating}</td></tr>`;
-        table.innerHTML += row;
+    function renderMaterials(list) {
+      const body = document.getElementById("materialBody");
+      body.innerHTML = "";
+      list.forEach(item => {
+        const row = `<tr><td>${item.name}</td><td>${item.rating}</td></tr>`;
+        body.innerHTML += row;
       });
+    }
+
+    function filterMaterials() {
+      const query = document.getElementById("search").value.toLowerCase();
+      const filtered = currentMaterials.filter(m => m.name.toLowerCase().includes(query));
+      renderMaterials(filtered);
+    }
+
+    function sortMaterials() {
+      const criteria = document.getElementById("sort").value;
+      const sorted = [...currentMaterials].sort((a, b) => {
+        if (criteria === "name") return a.name.localeCompare(b.name);
+        if (criteria === "rating") return a.rating.localeCompare(b.rating);
+      });
+      renderMaterials(sorted);
     }
   </script>
 </body>
