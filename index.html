@@ -112,6 +112,11 @@
       border-radius: 6px;
       text-align: center;
     }
+    select {
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
     #downloadBtn {
       display: block;
       margin: 0 auto;
@@ -177,40 +182,25 @@
   <script>
     const data = {
       house: [
-        { item: 'Switch Board', rating: '16A' },
-        { item: '3 Core Wire', rating: '2.5 sqmm' },
-        { item: 'Bulb Holder', rating: '250V' },
-        { item: 'Fan Regulator', rating: '2-step' },
-        { item: 'Ceiling Rose', rating: '240V' },
-        { item: 'MCB', rating: '6A' },
-        { item: 'PVC Conduit Pipe', rating: '25mm' },
-        { item: 'Junction Box', rating: '4 way' },
-        { item: 'LED Bulb', rating: '9W' },
-        { item: 'Socket', rating: '6/16A' },
+        { item: 'Switch Board', ratings: ['6A', '10A', '16A'] },
+        { item: '3 Core Wire', ratings: ['1.5 sqmm', '2.5 sqmm', '4 sqmm'] },
+        { item: 'Bulb Holder', ratings: ['100V', '240V'] },
+        { item: 'Fan Regulator', ratings: ['2-step', '4-step'] },
+        { item: 'LED Bulb', ratings: ['5W', '9W', '12W'] },
       ],
       industrial: [
-        { item: 'MCB Panel', rating: '63A' },
-        { item: 'XLPE Cable', rating: '10 sqmm' },
-        { item: 'Contactor', rating: '230V' },
-        { item: 'MCCB', rating: '125A' },
-        { item: 'Busbar', rating: 'Copper' },
-        { item: 'Overload Relay', rating: '10-16A' },
-        { item: 'Industrial Socket', rating: '32A' },
-        { item: 'Switch Disconnector', rating: '100A' },
-        { item: 'VFD Drive', rating: '5HP' },
-        { item: 'LT Panel', rating: '415V' },
+        { item: 'MCB Panel', ratings: ['32A', '63A', '100A'] },
+        { item: 'XLPE Cable', ratings: ['10 sqmm', '16 sqmm', '25 sqmm'] },
+        { item: 'Contactor', ratings: ['12A', '25A', '40A'] },
+        { item: 'MCCB', ratings: ['100A', '125A', '200A'] },
+        { item: 'Busbar', ratings: ['Copper', 'Aluminium'] },
       ],
       solar: [
-        { item: 'Solar Panel', rating: '320W' },
-        { item: 'Inverter', rating: '5kVA' },
-        { item: 'Battery', rating: '150Ah' },
-        { item: 'Charge Controller', rating: '24V' },
-        { item: 'DC Cable', rating: '6 sqmm' },
-        { item: 'MC4 Connector', rating: '1000V' },
-        { item: 'PV Combiner Box', rating: '4 in 1 out' },
-        { item: 'Earthing Kit', rating: 'Solar' },
-        { item: 'SPD', rating: 'DC 600V' },
-        { item: 'ACDB', rating: '3 Phase' },
+        { item: 'Solar Panel', ratings: ['320W', '400W', '540W'] },
+        { item: 'Inverter', ratings: ['3kVA', '5kVA', '10kVA'] },
+        { item: 'Battery', ratings: ['100Ah', '150Ah', '200Ah'] },
+        { item: 'Charge Controller', ratings: ['12V', '24V', '48V'] },
+        { item: 'DC Cable', ratings: ['4 sqmm', '6 sqmm', '10 sqmm'] },
       ]
     };
 
@@ -224,11 +214,12 @@
 
       table.innerHTML = '';
       data[type].forEach((d, index) => {
+        const ratingOptions = d.ratings.map(r => `<option value=\"${r}\">${r}</option>`).join('');
         const row = `
           <tr>
             <td><input type="checkbox" id="check_${type}_${index}"></td>
             <td>${d.item}</td>
-            <td>${d.rating}</td>
+            <td><select id="rating_${type}_${index}">${ratingOptions}</select></td>
             <td><input type="number" min="1" value="1" id="qty_${type}_${index}"></td>
           </tr>`;
         table.innerHTML += row;
