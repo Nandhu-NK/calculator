@@ -32,6 +32,8 @@
       display: flex;
       justify-content: space-around;
       margin: 20px 0;
+      flex-wrap: wrap;
+      gap: 10px;
     }
     .options button {
       padding: 15px 25px;
@@ -53,6 +55,8 @@
       border-radius: 10px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       margin-bottom: 20px;
+      max-height: 400px;
+      overflow-y: auto;
     }
     table {
       width: 100%;
@@ -66,6 +70,8 @@
     th {
       background: #007bff;
       color: #fff;
+      position: sticky;
+      top: 0;
     }
     #downloadBtn {
       display: block;
@@ -126,16 +132,55 @@
         { item: 'Switch Board', rating: '16A' },
         { item: '3 Core Wire', rating: '2.5 sqmm' },
         { item: 'Bulb Holder', rating: '250V' },
+        { item: 'Fan Regulator', rating: '2-step' },
+        { item: 'Ceiling Rose', rating: '240V' },
+        { item: 'MCB', rating: '6A' },
+        { item: 'PVC Conduit Pipe', rating: '25mm' },
+        { item: 'Junction Box', rating: '4 way' },
+        { item: 'LED Bulb', rating: '9W' },
+        { item: 'Socket', rating: '6/16A' },
+        { item: 'Distribution Board', rating: '12 way' },
+        { item: 'Earthing Rod', rating: '2m' },
+        { item: 'Insulation Tape', rating: 'PVC' },
+        { item: 'Main Switch', rating: '32A' },
+        { item: 'Service Wire', rating: '10 sqmm' },
+        // 👉 Add more till 100+
       ],
       industrial: [
         { item: 'MCB Panel', rating: '63A' },
         { item: 'XLPE Cable', rating: '10 sqmm' },
         { item: 'Contactor', rating: '230V' },
+        { item: 'MCCB', rating: '125A' },
+        { item: 'Busbar', rating: 'Copper' },
+        { item: 'Overload Relay', rating: '10-16A' },
+        { item: 'Industrial Socket', rating: '32A' },
+        { item: 'Switch Disconnector', rating: '100A' },
+        { item: 'VFD Drive', rating: '5HP' },
+        { item: 'LT Panel', rating: '415V' },
+        { item: 'Power Cable', rating: '50 sqmm' },
+        { item: 'Earthing Strip', rating: '25x3mm' },
+        { item: 'Fuse Link', rating: '32A' },
+        { item: 'APFC Panel', rating: 'Automatic' },
+        { item: 'Control Transformer', rating: '230/110V' },
+        // 👉 Add more till 100+
       ],
       solar: [
         { item: 'Solar Panel', rating: '320W' },
         { item: 'Inverter', rating: '5kVA' },
         { item: 'Battery', rating: '150Ah' },
+        { item: 'Charge Controller', rating: '24V' },
+        { item: 'DC Cable', rating: '6 sqmm' },
+        { item: 'MC4 Connector', rating: '1000V' },
+        { item: 'PV Combiner Box', rating: '4 in 1 out' },
+        { item: 'Earthing Kit', rating: 'Solar' },
+        { item: 'SPD', rating: 'DC 600V' },
+        { item: 'ACDB', rating: '3 Phase' },
+        { item: 'DCDB', rating: '1000V' },
+        { item: 'Panel Mounting Structure', rating: 'Aluminium' },
+        { item: 'Cable Tie', rating: 'UV resistant' },
+        { item: 'Junction Box', rating: 'IP65' },
+        { item: 'Surge Protector', rating: 'DC 1000V' },
+        // 👉 Add more till 100+
       ]
     };
 
