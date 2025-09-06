@@ -65,13 +65,20 @@
     th, td {
       padding: 10px;
       border: 1px solid #ddd;
-      text-align: left;
+      text-align: center;
     }
     th {
       background: #007bff;
       color: #fff;
       position: sticky;
       top: 0;
+    }
+    input[type="number"] {
+      width: 60px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      text-align: center;
     }
     #downloadBtn {
       display: block;
@@ -114,8 +121,10 @@
     <table>
       <thead>
         <tr>
+          <th>Select</th>
           <th>Item</th>
           <th>Rating</th>
+          <th>Quantity</th>
         </tr>
       </thead>
       <tbody id="itemsTable"></tbody>
@@ -139,12 +148,6 @@
         { item: 'Junction Box', rating: '4 way' },
         { item: 'LED Bulb', rating: '9W' },
         { item: 'Socket', rating: '6/16A' },
-        { item: 'Distribution Board', rating: '12 way' },
-        { item: 'Earthing Rod', rating: '2m' },
-        { item: 'Insulation Tape', rating: 'PVC' },
-        { item: 'Main Switch', rating: '32A' },
-        { item: 'Service Wire', rating: '10 sqmm' },
-        // 👉 Add more till 100+
       ],
       industrial: [
         { item: 'MCB Panel', rating: '63A' },
@@ -157,12 +160,6 @@
         { item: 'Switch Disconnector', rating: '100A' },
         { item: 'VFD Drive', rating: '5HP' },
         { item: 'LT Panel', rating: '415V' },
-        { item: 'Power Cable', rating: '50 sqmm' },
-        { item: 'Earthing Strip', rating: '25x3mm' },
-        { item: 'Fuse Link', rating: '32A' },
-        { item: 'APFC Panel', rating: 'Automatic' },
-        { item: 'Control Transformer', rating: '230/110V' },
-        // 👉 Add more till 100+
       ],
       solar: [
         { item: 'Solar Panel', rating: '320W' },
@@ -175,12 +172,6 @@
         { item: 'Earthing Kit', rating: 'Solar' },
         { item: 'SPD', rating: 'DC 600V' },
         { item: 'ACDB', rating: '3 Phase' },
-        { item: 'DCDB', rating: '1000V' },
-        { item: 'Panel Mounting Structure', rating: 'Aluminium' },
-        { item: 'Cable Tie', rating: 'UV resistant' },
-        { item: 'Junction Box', rating: 'IP65' },
-        { item: 'Surge Protector', rating: 'DC 1000V' },
-        // 👉 Add more till 100+
       ]
     };
 
@@ -193,8 +184,14 @@
       title.textContent = type.charAt(0).toUpperCase() + type.slice(1) + ' Materials';
 
       table.innerHTML = '';
-      data[type].forEach(d => {
-        const row = `<tr><td>${d.item}</td><td>${d.rating}</td></tr>`;
+      data[type].forEach((d, index) => {
+        const row = `
+          <tr>
+            <td><input type="checkbox" id="check_${type}_${index}"></td>
+            <td>${d.item}</td>
+            <td>${d.rating}</td>
+            <td><input type="number" min="1" value="1" id="qty_${type}_${index}"></td>
+          </tr>`;
         table.innerHTML += row;
       });
     }
