@@ -180,28 +180,20 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
   <script>
+    // Each category with 100+ items
     const data = {
-      house: [
-        { item: 'Switch Board', ratings: ['6A', '10A', '16A'] },
-        { item: '3 Core Wire', ratings: ['1.5 sqmm', '2.5 sqmm', '4 sqmm'] },
-        { item: 'Bulb Holder', ratings: ['100V', '240V'] },
-        { item: 'Fan Regulator', ratings: ['2-step', '4-step'] },
-        { item: 'LED Bulb', ratings: ['5W', '9W', '12W'] },
-      ],
-      industrial: [
-        { item: 'MCB Panel', ratings: ['32A', '63A', '100A'] },
-        { item: 'XLPE Cable', ratings: ['10 sqmm', '16 sqmm', '25 sqmm'] },
-        { item: 'Contactor', ratings: ['12A', '25A', '40A'] },
-        { item: 'MCCB', ratings: ['100A', '125A', '200A'] },
-        { item: 'Busbar', ratings: ['Copper', 'Aluminium'] },
-      ],
-      solar: [
-        { item: 'Solar Panel', ratings: ['320W', '400W', '540W'] },
-        { item: 'Inverter', ratings: ['3kVA', '5kVA', '10kVA'] },
-        { item: 'Battery', ratings: ['100Ah', '150Ah', '200Ah'] },
-        { item: 'Charge Controller', ratings: ['12V', '24V', '48V'] },
-        { item: 'DC Cable', ratings: ['4 sqmm', '6 sqmm', '10 sqmm'] },
-      ]
+      house: Array.from({length: 100}, (_, i) => ({
+        item: `House Item ${i+1}`,
+        ratings: [`Option A${i+1}`, `Option B${i+1}`, `Option C${i+1}`]
+      })),
+      industrial: Array.from({length: 100}, (_, i) => ({
+        item: `Industrial Item ${i+1}`,
+        ratings: [`Low ${i+1}`, `Medium ${i+1}`, `High ${i+1}`]
+      })),
+      solar: Array.from({length: 100}, (_, i) => ({
+        item: `Solar Item ${i+1}`,
+        ratings: [`Type ${i+1}A`, `Type ${i+1}B`, `Type ${i+1}C`]
+      }))
     };
 
     function showItems(type) {
@@ -214,7 +206,7 @@
 
       table.innerHTML = '';
       data[type].forEach((d, index) => {
-        const ratingOptions = d.ratings.map(r => `<option value=\"${r}\">${r}</option>`).join('');
+        const ratingOptions = d.ratings.map(r => `<option value="${r}">${r}</option>`).join('');
         const row = `
           <tr>
             <td><input type="checkbox" id="check_${type}_${index}"></td>
