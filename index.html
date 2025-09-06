@@ -6,66 +6,92 @@
   <title>Material List</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      background: #f4f6f9;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #eef2f7;
+      color: #333;
     }
-    h1 {
+    header {
+      background: #007bff;
+      color: #fff;
+      padding: 20px;
       text-align: center;
-      margin-bottom: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .container {
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 20px;
     }
     .form-section {
       background: #fff;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin-bottom: 25px;
+    }
+    .form-section h2 {
+      margin-bottom: 15px;
+      font-size: 20px;
+      color: #007bff;
     }
     .form-section input {
-      margin: 8px 0;
-      padding: 8px;
+      margin: 10px 0;
+      padding: 10px;
       width: 100%;
       border: 1px solid #ccc;
-      border-radius: 5px;
+      border-radius: 8px;
+      font-size: 14px;
     }
     .options {
-      display: flex;
-      justify-content: space-around;
-      margin: 20px 0;
-      flex-wrap: wrap;
-      gap: 10px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin-bottom: 25px;
     }
     .options button {
-      padding: 15px 25px;
+      padding: 25px;
       border: none;
-      border-radius: 8px;
-      background: #007bff;
-      color: #fff;
-      font-size: 16px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      color: #007bff;
+      font-size: 18px;
+      font-weight: bold;
       cursor: pointer;
       transition: 0.3s;
     }
     .options button:hover {
-      background: #0056b3;
+      background: #007bff;
+      color: #fff;
+      transform: translateY(-3px);
     }
     .items-section {
       display: none;
       background: #fff;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin-bottom: 25px;
       max-height: 400px;
       overflow-y: auto;
+    }
+    .items-section h2 {
+      margin-bottom: 15px;
+      color: #007bff;
     }
     table {
       width: 100%;
       border-collapse: collapse;
     }
     th, td {
-      padding: 10px;
+      padding: 12px;
       border: 1px solid #ddd;
       text-align: center;
+      font-size: 14px;
     }
     th {
       background: #007bff;
@@ -73,66 +99,79 @@
       position: sticky;
       top: 0;
     }
+    tr:nth-child(even) {
+      background: #f9f9f9;
+    }
+    tr:hover {
+      background: #f1f7ff;
+    }
     input[type="number"] {
-      width: 60px;
-      padding: 5px;
+      width: 70px;
+      padding: 6px;
       border: 1px solid #ccc;
-      border-radius: 5px;
+      border-radius: 6px;
       text-align: center;
     }
     #downloadBtn {
       display: block;
       margin: 0 auto;
-      padding: 12px 20px;
+      padding: 14px 24px;
       border: none;
-      border-radius: 8px;
-      background: green;
+      border-radius: 10px;
+      background: #28a745;
       color: #fff;
-      font-size: 16px;
+      font-size: 18px;
+      font-weight: bold;
       cursor: pointer;
+      transition: 0.3s;
     }
     #downloadBtn:hover {
-      background: darkgreen;
+      background: #1e7e34;
+      transform: translateY(-2px);
     }
   </style>
 </head>
 <body>
-  <h1>Material List</h1>
+  <header>Material List</header>
+  <div class="container">
 
-  <!-- Customer Info Section -->
-  <div class="form-section">
-    <input type="text" placeholder="Customer Name">
-    <input type="text" placeholder="Mobile Number">
-    <input type="text" placeholder="Location">
-    <input type="text" placeholder="Electrician Name">
-    <input type="date">
+    <!-- Customer Info Section -->
+    <div class="form-section">
+      <h2>Customer Information</h2>
+      <input type="text" placeholder="Customer Name">
+      <input type="text" placeholder="Mobile Number">
+      <input type="text" placeholder="Location">
+      <input type="text" placeholder="Electrician Name">
+      <input type="date">
+    </div>
+
+    <!-- Options -->
+    <div class="options">
+      <button onclick="showItems('house')">🏠 House Wiring</button>
+      <button onclick="showItems('industrial')">🏭 Industrial Wiring</button>
+      <button onclick="showItems('solar')">☀️ Solar Panel Designing</button>
+    </div>
+
+    <!-- Items Section -->
+    <div id="items" class="items-section">
+      <h2 id="itemsTitle"></h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Select</th>
+            <th>Item</th>
+            <th>Rating</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody id="itemsTable"></tbody>
+      </table>
+    </div>
+
+    <!-- Download Button -->
+    <button id="downloadBtn" onclick="downloadPDF()">💾 Save as PDF</button>
+
   </div>
-
-  <!-- Options -->
-  <div class="options">
-    <button onclick="showItems('house')">House Wiring</button>
-    <button onclick="showItems('industrial')">Industrial Wiring</button>
-    <button onclick="showItems('solar')">Solar Panel Designing</button>
-  </div>
-
-  <!-- Items Section -->
-  <div id="items" class="items-section">
-    <h2 id="itemsTitle"></h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Select</th>
-          <th>Item</th>
-          <th>Rating</th>
-          <th>Quantity</th>
-        </tr>
-      </thead>
-      <tbody id="itemsTable"></tbody>
-    </table>
-  </div>
-
-  <!-- Download Button -->
-  <button id="downloadBtn" onclick="downloadPDF()">Save as PDF</button>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
   <script>
