@@ -180,20 +180,58 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
   <script>
-    // Each category with 100+ items
     const data = {
-      house: Array.from({length: 100}, (_, i) => ({
-        item: `House Item ${i+1}`,
-        ratings: [`Option A${i+1}`, `Option B${i+1}`, `Option C${i+1}`]
-      })),
-      industrial: Array.from({length: 100}, (_, i) => ({
-        item: `Industrial Item ${i+1}`,
-        ratings: [`Low ${i+1}`, `Medium ${i+1}`, `High ${i+1}`]
-      })),
-      solar: Array.from({length: 100}, (_, i) => ({
-        item: `Solar Item ${i+1}`,
-        ratings: [`Type ${i+1}A`, `Type ${i+1}B`, `Type ${i+1}C`]
-      }))
+      house: [
+        { item: 'Switch Board', ratings: ['6A', '10A', '16A'] },
+        { item: '3 Core Wire', ratings: ['1.5 sqmm', '2.5 sqmm', '4 sqmm'] },
+        { item: 'Bulb Holder', ratings: ['100V', '240V'] },
+        { item: 'Fan Regulator', ratings: ['2-step', '4-step'] },
+        { item: 'Ceiling Rose', ratings: ['240V', '400V'] },
+        { item: 'PVC Conduit Pipe', ratings: ['20mm', '25mm', '32mm'] },
+        { item: 'Junction Box', ratings: ['4-way', '6-way', '8-way'] },
+        { item: 'LED Bulb', ratings: ['5W', '9W', '12W'] },
+        { item: 'MCB', ratings: ['6A', '10A', '16A'] },
+        { item: 'Distribution Box', ratings: ['4-way', '6-way', '12-way'] },
+        { item: 'Fan', ratings: ['48 inch', '56 inch'] },
+        { item: 'Tube Light', ratings: ['18W', '36W'] },
+        { item: 'Socket', ratings: ['6A', '16A'] },
+        { item: 'Two-way Switch', ratings: ['6A', '10A'] },
+        { item: 'Earth Wire', ratings: ['1.5 sqmm', '2.5 sqmm'] }
+      ],
+      industrial: [
+        { item: 'MCB Panel', ratings: ['32A', '63A', '100A'] },
+        { item: 'XLPE Cable', ratings: ['10 sqmm', '16 sqmm', '25 sqmm'] },
+        { item: 'Contactor', ratings: ['12A', '25A', '40A'] },
+        { item: 'MCCB', ratings: ['100A', '125A', '200A'] },
+        { item: 'Busbar', ratings: ['Copper', 'Aluminium'] },
+        { item: 'Overload Relay', ratings: ['10-16A', '20-32A'] },
+        { item: 'Industrial Socket', ratings: ['16A', '32A', '63A'] },
+        { item: 'Switch Disconnector', ratings: ['63A', '100A'] },
+        { item: 'VFD Drive', ratings: ['3HP', '5HP', '10HP'] },
+        { item: 'LT Panel', ratings: ['250V', '415V'] },
+        { item: 'Current Transformer', ratings: ['100/5A', '200/5A'] },
+        { item: 'Potential Transformer', ratings: ['6kV/110V', '11kV/110V'] },
+        { item: 'Bus Duct', ratings: ['400A', '800A'] },
+        { item: 'Power Cable', ratings: ['70 sqmm', '95 sqmm', '120 sqmm'] },
+        { item: 'ACB', ratings: ['630A', '800A', '1000A'] }
+      ],
+      solar: [
+        { item: 'Solar Panel', ratings: ['320W', '400W', '540W'] },
+        { item: 'Inverter', ratings: ['3kVA', '5kVA', '10kVA'] },
+        { item: 'Battery', ratings: ['100Ah', '150Ah', '200Ah'] },
+        { item: 'Charge Controller', ratings: ['12V', '24V', '48V'] },
+        { item: 'DC Cable', ratings: ['4 sqmm', '6 sqmm', '10 sqmm'] },
+        { item: 'MC4 Connector', ratings: ['1000V', '1500V'] },
+        { item: 'PV Combiner Box', ratings: ['4 in 1 out', '6 in 1 out'] },
+        { item: 'Earthing Kit', ratings: ['GI', 'Copper'] },
+        { item: 'SPD (Surge Protection)', ratings: ['600V DC', '1000V DC'] },
+        { item: 'ACDB', ratings: ['Single Phase', 'Three Phase'] },
+        { item: 'DCDB', ratings: ['2 in 2 out', '4 in 4 out'] },
+        { item: 'Structure Mounting Kit', ratings: ['Fixed', 'Adjustable'] },
+        { item: 'Monitoring Device', ratings: ['WiFi', 'GSM'] },
+        { item: 'Solar Water Pump', ratings: ['1HP', '2HP', '5HP'] },
+        { item: 'String Inverter', ratings: ['20kW', '30kW'] }
+      ]
     };
 
     function showItems(type) {
